@@ -1,3 +1,113 @@
 <resources>
-    <string name="app_name">Serve-n-Help</string>
+    <string name="app_name">Serve-N-Help</string>
+
+    <!-- Login -->
+    <string name="sign_in">Sign In</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_subtitle">Connecting surplus food to local hunger relief. Sign in to continue your mission.</string>
+    <string name="select_account_type">Select Account Type</string>
+    <string name="donor_mode">Donor Mode</string>
+    <string name="ngo_mode">NGO Mode</string>
+    <string name="donor_kitchen">Donor / Kitchen</string>
+    <string name="restaurant_caterer">Restaurant / Caterer</string>
+    <string name="ngo_bank">NGO / Bank</string>
+    <string name="shelters_relief">Shelters &amp; Relief</string>
+    <string name="registered_email_phone">Registered Email or Phone</string>
+    <string name="email_phone_hint">e.g. kitchen@delizioso.org or 9876543210</string>
+    <string name="security_password">Security Password</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="forgot_password">Forgot?</string>
+    <string name="stay_signed_in">Stay signed in (30 days)</string>
+    <string name="safe_handling">Safe Handling</string>
+    <string name="sign_in_as_restaurant">Sign In as Restaurant</string>
+    <string name="sign_in_as_ngo">Sign In as Food Bank / NGO</string>
+    <string name="sign_in_otp_biometrics">Sign in with OTP or Biometrics</string>
+    <string name="or_continue_with">Or continue with</string>
+    <string name="google_sso">Google</string>
+    <string name="ngo_gov_id">NGO / Gov ID</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register_partner">Register Partner</string>
+    <string name="verified_community_footer">100% Verified Community • Safe Food Certified</string>
+    <string name="need_urgent_food_help">Need urgent food dispatch support?</string>
+    <string name="emergency_hotline">1800-HELP-RESCUE</string>
+
+    <!-- Create Account -->
+    <string name="create_account">Create Account</string>
+    <string name="join_servenhelp">Join Serve-N-Help</string>
+    <string name="register_subtitle">Select your organization role to launch rescue operations in under 2 minutes.</string>
+    <string name="quick_register_banner">Quick 2-minute registration • Zero food waste impact tracking</string>
+    <string name="org_category">Organization Category</string>
+    <string name="step_1_of_2">Step 1 of 2</string>
+    <string name="restaurant_food_donor">Restaurant / Food Donor</string>
+    <string name="safe_surplus_rescue">Safe Surplus Rescue</string>
+    <string name="donor_desc">Commercial kitchens, bakeries, event caterers, grocers &amp; hot food providers donating quality surplus.</string>
+    <string name="ngo_welfare_org">NGO / Welfare Org</string>
+    <string name="community_food_bank">Community Food Bank</string>
+    <string name="ngo_desc">Registered charities, homeless shelters, community relief kitchens &amp; child care centers distributing meals.</string>
+    <string name="org_name_label">Organization / Kitchen Name</string>
+    <string name="org_name_hint">e.g. Green Leaf Bistro &amp; Catering</string>
+    <string name="rep_name_label">Authorized Manager / Representative</string>
+    <string name="rep_name_hint">Full legal name</string>
+    <string name="official_email_label">Official Email Address</string>
+    <string name="official_email_hint">manager@greenleafkitchens.org</string>
+    <string name="contact_mobile_label">Operational Contact Mobile</string>
+    <string name="requires_sms_otp">Requires SMS OTP</string>
+    <string name="mobile_hint">98765 43210</string>
+    <string name="city_label">City / Municipality</string>
+    <string name="city_hint">Bengaluru</string>
+    <string name="pincode_label">Area Pincode</string>
+    <string name="pincode_hint">560001</string>
+    <string name="fssai_label">FSSAI Food Safety License No.</string>
+    <string name="fssai_hint">14-digit FSSAI Number</string>
+    <string name="mandatory_compliance">Mandatory Compliance</string>
+    <string name="fssai_helper">Guarantees temperature, safe packaging, and hygienic transfer compliance.</string>
+    <string name="create_password_label">Create Secure Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="terms_agreement">I confirm authorization for this establishment and agree to the Serve-N-Help Safe Food Handling Code, Good Samaritan legal protections, and Terms of Service.</string>
+    <string name="create_restaurant_account">Create Restaurant Account</string>
+    <string name="already_registered">Already registered with us?</string>
+
+    <!-- Dashboard -->
+    <string name="chef_greeting">Good Afternoon, Chef Rajesh 👋</string>
+    <string name="dashboard_subtitle">Manage surplus food and feed local communities</string>
+    <string name="kitchen_dispatch_active">Kitchen Dispatch Active</string>
+    <string name="verified_kitchen_id">Verified Kitchen #402</string>
+    <string name="impact_logistics_overview">Impact &amp; Logistics Overview</string>
+    <string name="real_time">Real-time</string>
+    <string name="total_donated_kg">1,420</string>
+    <string name="total_donated_label">Total Donated</string>
+    <string name="kg_rescued">kg rescued</string>
+    <string name="active_batches_count">3</string>
+    <string name="active_batches_label">Active Batches</string>
+    <string name="need_pickup">Need pickup</string>
+    <string name="completed_deliveries_count">84</string>
+    <string name="completed_label">Completed</string>
+    <string name="deliveries_label">Deliveries</string>
+    <string name="add_food_cta">+ Add Food for Donation</string>
+    <string name="available_donations_today">Available Donations Today</string>
+    <string name="see_all">See All (3)</string>
+
+    <!-- Add Food -->
+    <string name="new_donation">New Donation</string>
+    <string name="add_food_title">Add Food for Donation</string>
+    <string name="add_food_subtitle">Enter surplus food details to connect with nearby NGOs and shelters quickly.</string>
+    <string name="food_item_name">Food Item Name *</string>
+    <string name="food_category">Food Category *</string>
+    <string name="quantity">Quantity *</string>
+    <string name="unit">Unit *</string>
+    <string name="prep_time">Preparation Time *</string>
+    <string name="best_before_date">Best Before Date *</string>
+    <string name="expiry_time">Expiry Time *</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="dietary_notes">Dietary &amp; Packaging Notes</string>
+    <string name="select_delivery_method">Select Delivery Method</string>
+    <string name="request_pickup">Request Pickup</string>
+    <string name="self_delivery">Self Delivery</string>
+    <string name="publish_donation">Publish Donation</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_donations">Donations</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
 </resources>

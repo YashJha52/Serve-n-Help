@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ServenHelp">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -21,6 +21,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".RestaurantDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".FoodAvailableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonationDetailsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Rounded Background Container -->
+    <path
+        android:fillColor="#15803D"
+        android:pathData="M 24,0 H 72 A 24,24 0 0 1 96,24 V 72 A 24,24 0 0 1 72,96 H 24 A 24,24 0 0 1 0,72 V 24 A 24,24 0 0 1 24,0 Z" />
+    <!-- Heart / Leaf Outer Glow -->
+    <path
+        android:fillAlpha="0.3"
+        android:fillColor="#22C55E"
+        android:pathData="M48,22 C38,22 28,30 28,42 C28,56 48,74 48,74 C48,74 68,56 68,42 C68,30 58,22 48,22 Z" />
+    <!-- Heart / Leaf Inner Body -->
+    <path
+        android:fillColor="#DCFCE7"
+        android:pathData="M48,30 C54.6,30 60,35.4 60,42 C60,51.5 48,64 48,64 C48,64 36,51.5 36,42 C36,35.4 41.4,30 48,30 Z" />
+    <!-- Checkmark -->
+    <path
+        android:pathData="M44,42 L47,45 L53,39"
+        android:strokeColor="#15803D"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3" />
+    <!-- Accent Dot -->
+    <path
+        android:fillColor="#15803D"
+        android:pathData="M48,45 A3,3 0 1,1 48,51 A3,3 0 1,1 48,45 Z" />
+    <!-- Base Helping Hands Curve -->
+    <path
+        android:pathData="M30,68 C34,65 42,63 48,63 C54,63 62,65 66,68"
+        android:strokeColor="#86EFAC"
+        android:strokeLineCap="round"
+        android:strokeWidth="3" />
+</vector>
