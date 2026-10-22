@@ -108,6 +108,7 @@
                     android:background="@drawable/bg_pill_primary"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
+                    android:id="@+id/tv_details_status"
                     android:text="Active Pickup"
                     android:textColor="@color/on_primary_fixed"
                     android:textSize="11sp"
@@ -166,6 +167,7 @@
                             android:background="@drawable/bg_pill_neutral"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
+                            android:id="@+id/tv_details_category"
                             android:text="Cooked Food"
                             android:textColor="@color/on_surface"
                             android:textSize="11sp"
@@ -178,6 +180,7 @@
                             android:background="@drawable/bg_rounded_card_low"
                             android:paddingHorizontal="6dp"
                             android:paddingVertical="3dp"
+                            android:id="@+id/tv_details_diet"
                             android:text="Pure Veg"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="11sp" />
@@ -196,6 +199,7 @@
                             android:drawableTint="@color/secondary"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="4dp"
+                            android:id="@+id/tv_details_expiry"
                             android:text="Expires in 2h 45m"
                             android:textColor="@color/secondary"
                             android:textSize="11sp"
@@ -243,6 +247,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:id="@+id/tv_details_servings"
                                 android:text="15 Portions"
                                 android:textColor="@color/on_surface"
                                 android:textSize="14sp"
@@ -275,6 +280,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:id="@+id/tv_details_weight"
                                 android:text="~7.5 kg"
                                 android:textColor="@color/on_surface"
                                 android:textSize="14sp"
@@ -299,6 +305,7 @@
                                 android:drawableStart="@drawable/ic_inventory_2"
                                 android:drawablePadding="4dp"
                                 android:drawableTint="@color/outline"
+                                android:id="@+id/tv_details_containers_label"
                                 android:text="Containers"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="11sp" />
@@ -307,6 +314,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:id="@+id/tv_details_containers"
                                 android:text="3 Boxes"
                                 android:textColor="@color/on_surface"
                                 android:textSize="14sp"
@@ -362,6 +370,7 @@
                             android:background="@drawable/bg_pill_primary"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
+                            android:id="@+id/tv_details_step"
                             android:text="Step 2 of 4"
                             android:textColor="@color/on_primary_fixed"
                             android:textSize="11sp" />
@@ -384,12 +393,14 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:background="@drawable/bg_status_dot_active"
+                                android:id="@+id/iv_step1"
                                 android:contentDescription="Done"
                                 android:padding="4dp"
                                 android:src="@drawable/ic_check"
                                 app:tint="@color/on_primary" />
 
                             <View
+                                android:id="@+id/line_step1"
                                 android:layout_width="2dp"
                                 android:layout_height="28dp"
                                 android:background="@color/primary" />
@@ -411,6 +422,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:id="@+id/tv_step1_title"
                                     android:text="Donation Published"
                                     android:textColor="@color/on_surface"
                                     android:textSize="14sp"
@@ -419,6 +431,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_step1_time"
                                     android:text="01:30 PM"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="11sp" />
@@ -427,6 +440,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_step1_desc"
                                 android:text="Listed on the community rescue feed"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="12sp" />
@@ -449,12 +463,14 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:background="@drawable/bg_status_dot_active"
+                                android:id="@+id/iv_step2"
                                 android:contentDescription="Active step"
                                 android:padding="4dp"
                                 android:src="@drawable/ic_handshake"
                                 app:tint="@color/on_primary" />
 
                             <View
+                                android:id="@+id/line_step2"
                                 android:layout_width="2dp"
                                 android:layout_height="28dp"
                                 android:background="@color/divider" />
@@ -476,6 +492,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:id="@+id/tv_step2_title"
                                     android:text="Accepted by NGO"
                                     android:textColor="@color/primary"
                                     android:textSize="14sp"
@@ -484,6 +501,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_step2_time"
                                     android:text="02:00 PM"
                                     android:textColor="@color/primary"
                                     android:textSize="11sp"
@@ -493,6 +511,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_step2_desc"
                                 android:text="Claimed by FeedCare Community Foundation"
                                 android:textColor="@color/on_surface"
                                 android:textSize="12sp" />
@@ -515,12 +534,14 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:background="@drawable/bg_pill_neutral"
+                                android:id="@+id/iv_step3"
                                 android:contentDescription="Pickup pending"
                                 android:padding="5dp"
                                 android:src="@drawable/ic_local_shipping"
                                 app:tint="@color/outline" />
 
                             <View
+                                android:id="@+id/line_step3"
                                 android:layout_width="2dp"
                                 android:layout_height="28dp"
                                 android:background="@color/divider" />
@@ -542,6 +563,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:id="@+id/tv_step3_title"
                                     android:text="Picked Up"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="14sp" />
@@ -549,6 +571,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_step3_time"
                                     android:text="Exp. 03:00 PM"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="11sp" />
@@ -557,6 +580,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_step3_desc"
                                 android:text="Volunteer on the way to restaurant"
                                 android:textColor="@color/outline"
                                 android:textSize="12sp" />
@@ -579,6 +603,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:background="@drawable/bg_pill_neutral"
+                                android:id="@+id/iv_step4"
                                 android:contentDescription="Distributed"
                                 android:padding="5dp"
                                 android:src="@drawable/ic_volunteer_activism"
@@ -601,6 +626,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:id="@+id/tv_step4_title"
                                     android:text="Delivered &amp; Distributed"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="14sp" />
@@ -608,6 +634,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_step4_time"
                                     android:text="Est. 04:00 PM"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="11sp" />
@@ -616,6 +643,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_step4_desc"
                                 android:text="Distribution at Indiranagar Shelter"
                                 android:textColor="@color/outline"
                                 android:textSize="12sp" />
@@ -662,6 +690,7 @@
                             android:background="@drawable/bg_pill_tertiary"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
+                            android:id="@+id/tv_details_method"
                             android:text="NGO Pickup"
                             android:textColor="@color/tertiary"
                             android:textSize="11sp"
@@ -688,6 +717,7 @@
                                 android:layout_height="36dp"
                                 android:background="@drawable/bg_pill_tertiary"
                                 android:gravity="center"
+                                android:id="@+id/tv_details_avatar"
                                 android:text="FC"
                                 android:textColor="@color/tertiary"
                                 android:textSize="14sp"
@@ -703,6 +733,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_details_ngo"
                                     android:text="FeedCare Foundation"
                                     android:textColor="@color/on_surface"
                                     android:textSize="14sp"
@@ -711,6 +742,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_details_ngo_sub"
                                     android:text="Verified NGO Partner • NGO-KA-2023"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="11sp" />
@@ -749,6 +781,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_details_contact_name"
                                     android:text="Arjun Verma"
                                     android:textColor="@color/on_surface"
                                     android:textSize="13sp"
@@ -757,6 +790,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:id="@+id/tv_details_contact_phone"
                                     android:text="+91 98765 43210"
                                     android:textColor="@color/on_surface_variant"
                                     android:textSize="11sp" />
@@ -808,6 +842,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_details_address_title"
                                 android:text="Royal Curry House, Kitchen Backgate #2"
                                 android:textColor="@color/on_surface"
                                 android:textSize="13sp"
@@ -816,6 +851,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_details_address"
                                 android:text="100 Feet Rd, 12th Main, Indiranagar, Bengaluru"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="11sp" />
@@ -828,6 +864,7 @@
                             android:backgroundTint="@color/surface_container_high"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
+                            android:id="@+id/btn_details_map"
                             android:text="Map"
                             android:textAllCaps="false"
                             android:textColor="@color/primary"
@@ -861,6 +898,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
+                            android:id="@+id/tv_details_notes"
                             android:text="Packed in 3 insulated thermal food grade boxes. Sealed at 65°C. Safe handling labels attached. Keep warm during transit."
                             android:textColor="@color/on_surface_variant"
                             android:textSize="11sp" />
@@ -897,6 +935,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        android:id="@+id/tv_details_co2"
                         android:text="CO₂ Savings: 18.7 kg"
                         android:textColor="@color/on_surface"
                         android:textSize="12sp"
@@ -921,6 +960,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        android:id="@+id/tv_details_meals"
                         android:text="Meals Fed: 15 People"
                         android:textColor="@color/on_surface"
                         android:textSize="12sp"
@@ -1010,6 +1050,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
+                    android:id="@+id/tv_details_footer"
                     android:text="Requires OTP or QR scan from driver for verification"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="11sp" />

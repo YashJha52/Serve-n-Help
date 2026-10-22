@@ -24,7 +24,7 @@
     <string name="sign_in_otp_biometrics">Sign in with OTP or Biometrics</string>
     <string name="or_continue_with">Or continue with</string>
     <string name="google_sso">Google</string>
-    <string name="ngo_gov_id">NGO / Gov ID</string>
+    <string name="ngo_gov_id">Gov ID</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="register_partner">Register Partner</string>
     <string name="verified_community_footer">100% Verified Community • Safe Food Certified</string>
@@ -83,9 +83,9 @@
     <string name="completed_deliveries_count">84</string>
     <string name="completed_label">Completed</string>
     <string name="deliveries_label">Deliveries</string>
-    <string name="add_food_cta">+ Add Food for Donation</string>
+    <string name="add_food_cta">Add Food for Donation</string>
     <string name="available_donations_today">Available Donations Today</string>
-    <string name="see_all">See All (3)</string>
+    <string name="see_all">See All</string>
 
     <!-- Add Food -->
     <string name="new_donation">New Donation</string>

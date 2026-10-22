@@ -45,6 +45,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        android:id="@+id/tv_feed_header_name"
                         android:text="Royal Curry House"
                         android:textColor="@color/on_surface"
                         android:textSize="16sp"
@@ -53,6 +54,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/tv_feed_header_role"
                         android:text="Donations"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp" />
@@ -62,6 +64,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/btn_feed_notifications"
                     android:contentDescription="Notifications"
                     android:src="@drawable/ic_notifications"
                     app:tint="@color/on_surface_variant" />
@@ -71,6 +74,7 @@
                     android:layout_height="32dp"
                     android:layout_marginStart="6dp"
                     android:background="@drawable/bg_status_dot_active"
+                    android:id="@+id/iv_feed_profile"
                     android:contentDescription="Profile avatar"
                     android:padding="6dp"
                     android:src="@drawable/ic_person"
@@ -120,6 +124,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/tv_feed_title_main"
                         android:text="Food Available"
                         android:textColor="@color/on_surface"
                         android:textSize="20sp"
@@ -142,6 +147,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:letterSpacing="0.03"
+                            android:id="@+id/tv_feed_live_count"
                             android:text="LIVE INVENTORY • 4 ACTIVE BATCHES"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="10sp"
@@ -240,6 +246,7 @@
                         android:drawableTint="@color/on_primary_fixed"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
+                        android:id="@+id/chip_all"
                         android:text="All (4)"
                         android:textColor="@color/on_primary_fixed"
                         android:textSize="12sp"
@@ -252,6 +259,7 @@
                         android:background="@drawable/bg_pill_neutral"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
+                        android:id="@+id/chip_cat1"
                         android:text="Cooked Rice"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp" />
@@ -263,6 +271,7 @@
                         android:background="@drawable/bg_pill_neutral"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
+                        android:id="@+id/chip_cat2"
                         android:text="Biryani"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp" />
@@ -274,6 +283,7 @@
                         android:background="@drawable/bg_pill_neutral"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
+                        android:id="@+id/chip_cat3"
                         android:text="Breads / Rotis"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp" />
@@ -285,6 +295,7 @@
                         android:background="@drawable/bg_pill_neutral"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="8dp"
+                        android:id="@+id/chip_cat4"
                         android:text="Curries &amp; Veg"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp" />
@@ -327,6 +338,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_feed_banner_title"
                             android:text="High Donor Rating (4.9★)"
                             android:textColor="@color/on_surface"
                             android:textSize="14sp"
@@ -335,6 +347,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_feed_banner_text"
                             android:text="Your food safely nourished 140 people this week"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="12sp" />

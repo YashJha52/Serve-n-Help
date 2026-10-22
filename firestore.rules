@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /donations/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.donorId == request.auth.uid;
+      // Donor manages their own listing; an NGO may claim it or update its pickup status
+      allow update: if signedIn() && (resource.data.donorId == request.auth.uid
+                    || resource.data.status == 'available'
+                    || resource.data.ngoId == request.auth.uid);
+      allow delete: if signedIn() && resource.data.donorId == request.auth.uid;
+    }
+
+    match /pickupRequests/{id} {
+      allow read, write: if signedIn();
+    }
+  }
+}

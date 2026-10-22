@@ -128,6 +128,20 @@ Serve-N-Help bridges this gap by providing a centralized platform where donors c
  
 ---
  
+## ⚙️ Setup
+
+1. Create a Firebase project and add an Android app with package name `com.example.serve_n_help`.
+2. Download `google-services.json` and place it in `app/`.
+3. In the Firebase console enable **Authentication → Email/Password** and create a **Cloud Firestore** database. Paste the contents of `firestore.rules` into the Firestore Rules tab.
+4. In Google Cloud console enable **Maps SDK for Android** for the same project and create an API key.
+5. Add the key to `local.properties` (not committed):
+   ```
+   MAPS_API_KEY=your_key_here
+   ```
+6. Sync Gradle and run the app.
+
+---
+
 ## 🚀 Future Enhancements
  
 - AI-based food quality and freshness detection.

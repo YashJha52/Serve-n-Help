@@ -681,6 +681,7 @@
 
             <!-- Password Strength Bar -->
             <LinearLayout
+                android:id="@+id/layout_password_strength"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="6dp"
@@ -755,7 +756,6 @@
                     android:id="@+id/cb_agree_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     app:buttonTint="@color/primary" />
 
                 <TextView

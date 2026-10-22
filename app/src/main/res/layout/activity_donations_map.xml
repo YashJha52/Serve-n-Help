@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_donations"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/btn_back_map"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_rounded_card"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/tv_map_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_pill_primary"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp"
+        android:text="Loading donations…"
+        android:textColor="@color/on_primary_fixed"
+        android:textStyle="bold" />
+</FrameLayout>

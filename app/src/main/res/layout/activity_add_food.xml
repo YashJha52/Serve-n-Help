@@ -150,7 +150,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="e.g., Fresh Vegetable Biryani"
-                    android:text="Fresh Vegetable Biryani"
                     android:textColor="@color/on_surface"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -226,7 +225,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:text="15"
                             android:textColor="@color/on_surface"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -299,7 +297,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:text="Today, 01:30 PM"
                     android:textColor="@color/on_surface"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -343,7 +340,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            android:text="Today, Oct 24"
                             android:textColor="@color/on_surface"
                             android:textSize="13sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -381,7 +377,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            android:text="07:30 PM"
                             android:textColor="@color/on_surface"
                             android:textSize="13sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -408,6 +403,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
+                    android:id="@+id/tv_expiry_hint"
                     android:text="Cooked meals must be consumed within 6 hours for food safety."
                     android:textColor="@color/secondary"
                     android:textSize="12sp" />
@@ -474,6 +470,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tv_pickup_name"
                             android:text="Royal Curry House"
                             android:textColor="@color/on_surface"
                             android:textSize="14sp"
@@ -483,6 +480,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
+                            android:id="@+id/tv_pickup_address"
                             android:text="42 100ft Road, Indiranagar, Bangalore, 560038"
                             android:textColor="@color/on_surface_variant"
                             android:textSize="12sp" />
@@ -499,6 +497,7 @@
                                 android:background="@drawable/bg_pill_primary"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="3dp"
+                                android:id="@+id/tv_pickup_tag1"
                                 android:text="Kitchen Ground Floor"
                                 android:textColor="@color/primary"
                                 android:textSize="10sp"
@@ -511,6 +510,7 @@
                                 android:background="@drawable/bg_pill_neutral"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="3dp"
+                                android:id="@+id/tv_pickup_tag2"
                                 android:text="Rear Alley Gate 2"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="10sp" />
@@ -545,7 +545,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:lines="3"
-                    android:text="Contains dairy (paneer). Packed in food-grade foil containers."
                     android:textColor="@color/on_surface"
                     android:textSize="13sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -562,6 +561,7 @@
                     android:background="@drawable/bg_pill_neutral"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
+                    android:id="@+id/chip_veg"
                     android:text="+ Vegetarian"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="11sp" />
@@ -573,6 +573,7 @@
                     android:background="@drawable/bg_pill_neutral"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
+                    android:id="@+id/chip_nut_free"
                     android:text="+ Nut-Free"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="11sp" />
@@ -584,6 +585,7 @@
                     android:background="@drawable/bg_pill_neutral"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
+                    android:id="@+id/chip_halal"
                     android:text="+ Halal"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="11sp" />
