@@ -13,7 +13,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
+import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -21,6 +24,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
@@ -28,6 +32,7 @@ import java.util.Objects;
 public class CreateAccountActivity extends BaseActivity {
 
     private String selectedRole = FirebaseRepo.ROLE_DONOR;
+    private boolean isBiometricConfigured = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,11 @@ public class CreateAccountActivity extends BaseActivity {
             @Override public void afterTextChanged(Editable s) { updateStrength(strength, s.toString()); }
         });
 
+        // Optional Biometric setup
+        MaterialButton btnSetupBiometric = findViewById(R.id.btn_setup_biometric);
+        TextView tvBiometricStatus = findViewById(R.id.tv_biometric_status);
+        btnSetupBiometric.setOnClickListener(v -> setupBiometrics(btnSetupBiometric, tvBiometricStatus));
+
         // Go back to login
         btnBack.setOnClickListener(v -> finish());
         tvSignIn.setOnClickListener(v -> finish());
@@ -119,10 +129,13 @@ public class CreateAccountActivity extends BaseActivity {
                         user.put("pincode", textOf(etPincode));
                         user.put("licenseId", textOf(etLicense));
                         user.put("role", selectedRole);
+                        user.put("biometricEnabled", isBiometricConfigured);
                         user.put("createdAt", FieldValue.serverTimestamp());
 
                         FirebaseRepo.users().document(uid).set(user)
-                                .addOnSuccessListener(x -> LoginActivity.openHome(this, selectedRole))
+                                .addOnSuccessListener(x -> {
+                                    LoginActivity.openHome(this, selectedRole);
+                                })
                                 .addOnFailureListener(e -> {
                                     btnSubmit.setEnabled(true);
                                     btnSubmit.setText(submitLabel);
@@ -135,6 +148,68 @@ public class CreateAccountActivity extends BaseActivity {
                         Toast.makeText(this, LoginActivity.friendlyAuthError(e), Toast.LENGTH_LONG).show();
                     });
         });
+    }
+
+    private void setupBiometrics(MaterialButton btnBiometric, TextView tvStatus) {
+        BiometricManager biometricManager = BiometricManager.from(this);
+        int canAuthenticate = biometricManager.canAuthenticate(
+                BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK);
+
+        if (canAuthenticate != BiometricManager.BIOMETRIC_SUCCESS) {
+            String msg;
+            switch (canAuthenticate) {
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    msg = "No biometric hardware available on this device.";
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    msg = "Biometric hardware is currently unavailable.";
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    msg = "No biometrics enrolled. Please set up fingerprint or face unlock in Settings.";
+                    break;
+                default:
+                    msg = "Biometric authentication is not available on this device.";
+                    break;
+            }
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(CreateAccountActivity.this, executor,
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        if (errorCode != BiometricPrompt.ERROR_USER_CANCELED && errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                            Toast.makeText(getApplicationContext(), "Biometric error: " + errString, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        isBiometricConfigured = true;
+                        btnBiometric.setText("✓ Biometrics Configured");
+                        tvStatus.setText("Biometric authentication enabled for fast sign-in!");
+                        tvStatus.setTextColor(ContextCompat.getColor(CreateAccountActivity.this, R.color.accent));
+                        Toast.makeText(getApplicationContext(), "Biometric sign-in linked!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        Toast.makeText(getApplicationContext(), "Biometric match failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Setup Biometric Sign-In")
+                .setSubtitle("Confirm your fingerprint or face to enable biometric sign-in")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
     }
 
     private boolean validateRegistration(TextInputEditText etOrg, TextInputEditText etEmail,

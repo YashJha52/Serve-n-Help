@@ -1,7 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
+    function signedIn() {
+      return request.auth != null;
+    }
 
     match /users/{uid} {
       allow read: if signedIn();
@@ -9,13 +11,40 @@ service cloud.firestore {
     }
 
     match /donations/{id} {
+      function isDonor() {
+        return resource.data.donorId == request.auth.uid;
+      }
+
+      // Only the donor publishes the hash of their pickup code; nobody else may change it
+      function hashUnchanged() {
+        return request.resource.data.get('handoverHash', '') == resource.data.get('handoverHash', '');
+      }
+
+      // An NGO can only move an accepted donation to "picked up" by presenting the donor's
+      // one-time code, whose SHA-256 must match the hash the donor published
+      function handoverOk() {
+        return resource.data.status != 'accepted'
+            || request.resource.data.status == 'accepted'
+            || (request.resource.data.status == 'picked_up'
+                && resource.data.get('handoverHash', '') != ''
+                && hashing.sha256(bytes(id + ':' + request.resource.data.get('handoverProof', ''))).toHexString().lower()
+                    == resource.data.handoverHash);
+      }
+
       allow read: if signedIn();
       allow create: if signedIn() && request.resource.data.donorId == request.auth.uid;
       // Donor manages their own listing; an NGO may claim it or update its pickup status
-      allow update: if signedIn() && (resource.data.donorId == request.auth.uid
-                    || resource.data.status == 'available'
-                    || resource.data.ngoId == request.auth.uid);
-      allow delete: if signedIn() && resource.data.donorId == request.auth.uid;
+      allow update: if signedIn() && (isDonor()
+                    || (hashUnchanged() && resource.data.status == 'available')
+                    || (hashUnchanged() && resource.data.ngoId == request.auth.uid && handoverOk()));
+      allow delete: if signedIn() && isDonor();
+
+      // The plain pickup code: readable and writable only by the donor who owns the donation
+      match /private/{doc} {
+        allow read, write: if signedIn()
+            && exists(/databases/$(database)/documents/donations/$(id))
+            && get(/databases/$(database)/documents/donations/$(id)).data.donorId == request.auth.uid;
+      }
     }
 
     match /pickupRequests/{id} {

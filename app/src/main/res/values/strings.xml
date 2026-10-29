@@ -21,7 +21,11 @@
     <string name="safe_handling">Safe Handling</string>
     <string name="sign_in_as_restaurant">Sign in</string>
     <string name="sign_in_as_ngo">Sign In as Food Bank / NGO</string>
+    <string name="sign_in_biometrics">Sign in with Biometrics</string>
     <string name="sign_in_otp_biometrics">Sign in with OTP or Biometrics</string>
+    <string name="enable_biometric_optional">Enable Biometric Sign-In (Optional)</string>
+    <string name="biometric_setup_hint">Use fingerprint or face recognition for fast sign-in later</string>
+    <string name="biometric_authentication">Biometric Authentication</string>
     <string name="or_continue_with">Or continue with</string>
     <string name="google_sso">Google</string>
     <string name="ngo_gov_id">Gov ID</string>
