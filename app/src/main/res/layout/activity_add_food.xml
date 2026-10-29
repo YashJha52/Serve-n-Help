@@ -425,6 +425,59 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_option_porter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/space_12"
+                    android:paddingStart="@dimen/space_4"
+                    android:paddingEnd="@dimen/space_16">
+
+                    <RadioButton
+                        android:id="@+id/rb_porter"
+                        android:layout_width="@dimen/touch_target"
+                        android:layout_height="@dimen/touch_target"
+                        android:contentDescription="Porter delivery" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Send it with Porter"
+                            android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_4"
+                            android:text="The NGO books a Porter bike when they accept. Good for up to 20 kg."
+                            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="@dimen/space_8"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_moped"
+                        app:tint="@color/ink_muted" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 

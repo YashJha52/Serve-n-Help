@@ -72,6 +72,7 @@ public class AddFoodActivity extends BaseActivity {
         TextView tvExpiryHint = findViewById(R.id.tv_expiry_hint);
         RadioButton rbPickup = findViewById(R.id.rb_pickup);
         RadioButton rbSelf = findViewById(R.id.rb_self_delivery);
+        RadioButton rbPorter = findViewById(R.id.rb_porter);
         MaterialButton btnPublish = findViewById(R.id.btn_publish_donation);
         TextView tvPickupName = findViewById(R.id.tv_pickup_name);
         tvPickupAddress = findViewById(R.id.tv_pickup_address);
@@ -106,15 +107,16 @@ public class AddFoodActivity extends BaseActivity {
         bindDietChip(R.id.chip_halal, "Halal");
 
         // Delivery method cards behave like a radio group
-        MaterialCardView cardPickup = findViewById(R.id.card_option_pickup);
-        MaterialCardView cardSelf = findViewById(R.id.card_option_self);
-        View.OnClickListener choosePickup = v -> selectDelivery(false, rbPickup, rbSelf, cardPickup, cardSelf);
-        View.OnClickListener chooseSelf = v -> selectDelivery(true, rbPickup, rbSelf, cardPickup, cardSelf);
-        cardPickup.setOnClickListener(choosePickup);
-        rbPickup.setOnClickListener(choosePickup);
-        cardSelf.setOnClickListener(chooseSelf);
-        rbSelf.setOnClickListener(chooseSelf);
-        selectDelivery(false, rbPickup, rbSelf, cardPickup, cardSelf);
+        RadioButton[] radios = {rbPickup, rbSelf, rbPorter};
+        MaterialCardView[] cards = {
+                findViewById(R.id.card_option_pickup), findViewById(R.id.card_option_self), findViewById(R.id.card_option_porter)};
+        for (int i = 0; i < cards.length; i++) {
+            int choice = i;
+            View.OnClickListener choose = v -> selectDelivery(choice, radios, cards);
+            cards[i].setOnClickListener(choose);
+            radios[i].setOnClickListener(choose);
+        }
+        selectDelivery(0, radios, cards);
 
         tvPickupName.setText("");
         tvPickupAddress.setText("Not set yet. Pin the exact spot so the volunteer finds you.");
@@ -179,7 +181,8 @@ public class AddFoodActivity extends BaseActivity {
             d.expiryTime = textOf(etExpiryTime);
             d.expiresAt = new Timestamp(expiry.getTime());
             d.dietaryNotes = notes;
-            d.deliveryMethod = rbSelf.isChecked() ? "Self Delivery" : "NGO Pickup";
+            d.deliveryMethod = rbPorter.isChecked() ? Donation.DELIVERY_PORTER
+                    : rbSelf.isChecked() ? Donation.DELIVERY_SELF : Donation.DELIVERY_PICKUP;
             d.pickupAddress = pickupAddress;
             d.latitude = latitude;
             d.longitude = longitude;
@@ -211,17 +214,16 @@ public class AddFoodActivity extends BaseActivity {
     }
 
     /** Delivery method cards behave like a radio group, with the border following the choice. */
-    private void selectDelivery(boolean self, RadioButton rbPickup, RadioButton rbSelf,
-                                MaterialCardView cardPickup, MaterialCardView cardSelf) {
-        rbPickup.setChecked(!self);
-        rbSelf.setChecked(self);
+    private void selectDelivery(int choice, RadioButton[] radios, MaterialCardView[] cards) {
         float dp = getResources().getDisplayMetrics().density;
         int primary = ContextCompat.getColor(this, R.color.accent);
         int divider = ContextCompat.getColor(this, R.color.line);
-        cardPickup.setStrokeColor(self ? divider : primary);
-        cardPickup.setStrokeWidth((int) (dp * (self ? 1 : 2)));
-        cardSelf.setStrokeColor(self ? primary : divider);
-        cardSelf.setStrokeWidth((int) (dp * (self ? 2 : 1)));
+        for (int i = 0; i < cards.length; i++) {
+            boolean on = i == choice;
+            radios[i].setChecked(on);
+            cards[i].setStrokeColor(on ? primary : divider);
+            cards[i].setStrokeWidth((int) (dp * (on ? 2 : 1)));
+        }
     }
 
     private void bindDietChip(int id, String tag) {

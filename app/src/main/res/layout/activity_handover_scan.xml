@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Full-screen camera for scanning the donor's pickup QR. Colours are fixed white-on-black
+    rather than themed, because they sit on top of a live camera image.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview_scan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scaleType="fillCenter" />
+
+    <View
+        android:id="@+id/view_scan_frame"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_scan_frame" />
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/space_4">
+
+        <ImageButton
+            android:id="@+id/btn_back_scan"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_4"
+            android:layout_weight="1"
+            android:text="Scan pickup code"
+            android:textAppearance="@style/TextAppearance.SNH.ItemTitle"
+            android:textColor="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/btn_scan_torch"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Turn on torch"
+            android:src="@drawable/ic_flashlight"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- Bottom instructions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/screen_margin"
+        android:background="@drawable/bg_scan_scrim"
+        android:orientation="vertical"
+        android:padding="@dimen/space_16">
+
+        <TextView
+            android:id="@+id/tv_scan_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Point at the donor's QR code"
+            android:textAppearance="@style/TextAppearance.SNH.ItemTitle"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_scan_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:text="The donor opens this donation and taps Show pickup code. It scans on its own, no button needed."
+            android:textAppearance="@style/TextAppearance.SNH.BodySmall"
+            android:textColor="#DDFFFFFF" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_scan_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16"
+            android:text="Allow camera"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_scan_manual"
+            style="@style/Widget.SNH.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:text="Type the code instead"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_keyboard"
+            app:iconGravity="textStart"
+            app:iconTint="#FFFFFF"
+            app:backgroundTint="@android:color/transparent"
+            app:strokeColor="#99FFFFFF" />
+    </LinearLayout>
+</FrameLayout>

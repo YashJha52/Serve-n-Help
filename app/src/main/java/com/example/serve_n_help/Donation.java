@@ -12,6 +12,10 @@ public class Donation {
     public static final String STATUS_PICKED_UP = "picked_up";
     public static final String STATUS_DELIVERED = "delivered";
 
+    public static final String DELIVERY_PICKUP = "NGO Pickup";
+    public static final String DELIVERY_SELF = "Self Delivery";
+    public static final String DELIVERY_PORTER = "Porter Delivery";
+
     @DocumentId
     public String id;
 
@@ -40,9 +44,25 @@ public class Donation {
     public Timestamp acceptedAt;
     public Timestamp pickedUpAt;
     public Timestamp deliveredAt;
+    /** SHA-256 of the donor's one-time pickup code (see Handover). */
+    public String handoverHash;
+    /** The code the NGO scanned, checked against handoverHash by the Firestore rules. */
+    public String handoverProof;
+    public boolean pickupVerified;
+    /** Porter booking (see Porter.java); set once the NGO books a bike. */
+    public String porterOrderId;
+    public int porterFare;
+    public String dropAddress;
+    public double dropLat;
+    public double dropLng;
 
     public Donation() {
         // Required by Firestore
+    }
+
+    @Exclude
+    public boolean isPorter() {
+        return DELIVERY_PORTER.equals(deliveryMethod);
     }
 
     @Exclude

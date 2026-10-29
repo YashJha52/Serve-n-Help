@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Porter booking: live status, driver, fare. Shared by donation details and live tracking. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_porter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_16">
+
+        <!-- Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_step_done"
+                android:importantForAccessibility="no"
+                android:padding="8dp"
+                android:src="@drawable/ic_moped"
+                app:tint="@color/on_accent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_12"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Porter delivery"
+                    android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+                <TextView
+                    android:id="@+id/tv_porter_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Connecting to Porter…"
+                    android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Driver -->
+        <LinearLayout
+            android:id="@+id/layout_porter_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_porter_driver_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_avatar"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_12"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_porter_driver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.SNH.Body" />
+
+                <TextView
+                    android:id="@+id/tv_porter_vehicle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.SNH.Caption" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_porter_call"
+                style="@style/Widget.SNH.IconButton"
+                android:contentDescription="Call driver"
+                android:src="@drawable/ic_call" />
+        </LinearLayout>
+
+        <View
+            style="@style/Widget.SNH.Divider"
+            android:layout_marginTop="@dimen/space_16" />
+
+        <!-- Trip -->
+        <TextView
+            android:id="@+id/tv_porter_trip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
+        <TextView
+            android:id="@+id/tv_porter_drop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
+        <LinearLayout
+            android:id="@+id/layout_porter_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_porter_cancel"
+                style="@style/Widget.SNH.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel bike"
+                android:textColor="@color/danger"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_porter_track"
+                style="@style/Widget.SNH.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Track live" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:text="Porter sandbox · trips run at demo speed"
+            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

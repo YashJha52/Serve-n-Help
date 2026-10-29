@@ -31,6 +31,8 @@ public class LocationPickerActivity extends BaseActivity {
     public static final String EXTRA_LAT = "lat";
     public static final String EXTRA_LNG = "lng";
     public static final String EXTRA_ADDRESS = "address";
+    /** Optional instruction shown above the address, e.g. for picking a drop point. */
+    public static final String EXTRA_PROMPT = "prompt";
 
     // Bengaluru, used until we know where the user is
     static final LatLng DEFAULT_LOCATION = new LatLng(12.9716, 77.5946);
@@ -65,6 +67,8 @@ public class LocationPickerActivity extends BaseActivity {
             }
         });
         findViewById(R.id.btn_confirm_location).setOnClickListener(v -> confirm());
+        String prompt = getIntent().getStringExtra(EXTRA_PROMPT);
+        if (prompt != null) ((android.widget.TextView) findViewById(R.id.tv_picker_prompt)).setText(prompt);
 
         SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_picker);
         fragment.getMapAsync(googleMap -> {

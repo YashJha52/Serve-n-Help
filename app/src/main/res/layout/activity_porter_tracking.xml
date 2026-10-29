@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Live Porter trip: driver, pickup and drop on the map, status card pinned below. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_porter"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/btn_back_tracking"
+        style="@style/Widget.SNH.IconButton"
+        android:layout_margin="@dimen/space_16"
+        android:background="@drawable/bg_map_button"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_arrow_back" />
+
+    <FrameLayout
+        android:id="@+id/frame_porter_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/screen_margin">
+
+        <include layout="@layout/card_porter" />
+    </FrameLayout>
+</FrameLayout>

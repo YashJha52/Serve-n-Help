@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Always white behind the QR so it scans in dark mode too -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/radius_card" />
+    <solid android:color="#FFFFFF" />
+</shape>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Donor's one-time pickup code, shown when the NGO volunteer arrives -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="@dimen/space_8">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ask the NGO volunteer to scan this with Serve-N-Help. The food is marked picked up as soon as it scans."
+        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16"
+        android:background="@drawable/bg_qr_tile"
+        android:padding="@dimen/space_12">
+
+        <ImageView
+            android:id="@+id/iv_pickup_qr"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:contentDescription="Pickup QR code" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="Can't scan? Read out this code"
+        android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+    <TextView
+        android:id="@+id/tv_pickup_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_4"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.12"
+        android:textColor="@color/ink"
+        android:textIsSelectable="true"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+</LinearLayout>
