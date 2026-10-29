@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.button.MaterialButton;
@@ -93,7 +93,7 @@ public class DonationDetailsActivity extends BaseActivity {
         boolean isNgo = FirebaseRepo.ROLE_NGO.equals(role);
 
         text(R.id.tv_details_id, d.shortId());
-        text(R.id.tv_details_status, d.isExpired() ? "Expired" : Donation.statusLabel(d.status));
+        Ui.styleStatus(findViewById(R.id.tv_details_status), d);
         text(R.id.tv_details_title, d.foodName);
         text(R.id.tv_details_category, d.category);
         // Second chip shows the first dietary tag (the delivery method already has its own badge)
@@ -104,15 +104,15 @@ public class DonationDetailsActivity extends BaseActivity {
         text(R.id.tv_details_expiry, Ui.expiryText(d));
         text(R.id.tv_details_servings, d.quantity + " " + d.unit);
         text(R.id.tv_details_weight, String.format(Locale.getDefault(), "~%.1f kg", d.weightEstimateKg()));
-        text(R.id.tv_details_containers_label, "Prepared");
+        text(R.id.tv_details_containers_label, "Made at");
         text(R.id.tv_details_containers, d.prepTime == null ? "-" : d.prepTime.replace("Today, ", ""));
         text(R.id.tv_details_address_title, d.donorName);
         text(R.id.tv_details_address, d.pickupAddress);
         text(R.id.tv_details_notes, TextUtils.isEmpty(d.dietaryNotes) ? "No additional notes." : d.dietaryNotes);
         text(R.id.tv_details_method, d.deliveryMethod);
-        text(R.id.tv_details_meals, "Meals Fed: " + d.mealsEstimate() + " People");
+        text(R.id.tv_details_meals, "Feeds about " + d.mealsEstimate() + " people");
         // Roughly 2.5 kg CO2e avoided per kg of food rescued
-        text(R.id.tv_details_co2, String.format(Locale.getDefault(), "CO₂ Savings: %.1f kg", d.weightEstimateKg() * 2.5));
+        text(R.id.tv_details_co2, String.format(Locale.getDefault(), "Saves ~%.0f kg CO₂", d.weightEstimateKg() * 2.5));
 
         // Partner card: the NGO (for donors) or the donor (for NGOs)
         if (isNgo) {
@@ -155,17 +155,17 @@ public class DonationDetailsActivity extends BaseActivity {
                 "Waiting for pickup",
                 "Waiting for delivery"};
 
-        int primary = ContextCompat.getColor(this, R.color.primary);
-        int onPrimary = ContextCompat.getColor(this, R.color.on_primary);
-        int onSurface = ContextCompat.getColor(this, R.color.on_surface);
-        int muted = ContextCompat.getColor(this, R.color.on_surface_variant);
-        int outline = ContextCompat.getColor(this, R.color.outline);
-        int divider = ContextCompat.getColor(this, R.color.divider);
+        int primary = ContextCompat.getColor(this, R.color.accent);
+        int onPrimary = ContextCompat.getColor(this, R.color.on_accent);
+        int onSurface = ContextCompat.getColor(this, R.color.ink);
+        int muted = ContextCompat.getColor(this, R.color.ink_muted);
+        int outline = ContextCompat.getColor(this, R.color.ink_faint);
+        int divider = ContextCompat.getColor(this, R.color.line);
 
         for (int i = 0; i < 4; i++) {
             boolean done = i <= current;
             ImageView icon = findViewById(STEP_ICONS[i]);
-            icon.setBackgroundResource(done ? R.drawable.bg_status_dot_active : R.drawable.bg_pill_neutral);
+            icon.setBackgroundResource(done ? R.drawable.bg_step_done : R.drawable.bg_step_todo);
             icon.setImageTintList(ColorStateList.valueOf(done ? onPrimary : outline));
 
             TextView title = findViewById(STEP_TITLES[i]);
@@ -175,7 +175,7 @@ public class DonationDetailsActivity extends BaseActivity {
             time.setTextColor(i == current ? primary : muted);
             TextView desc = findViewById(STEP_DESCS[i]);
             desc.setText(done ? doneDesc[i] : pendingDesc[i]);
-            desc.setTextColor(done ? onSurface : outline);
+            desc.setTextColor(done ? onSurface : muted);
 
             if (i < 3) findViewById(STEP_LINES[i]).setBackgroundColor(i < current ? primary : divider);
         }
@@ -193,16 +193,16 @@ public class DonationDetailsActivity extends BaseActivity {
         if (d.isExpired()) {
             btnPrimary.setVisibility(View.GONE);
         } else if (isNgo && Donation.STATUS_AVAILABLE.equals(d.status)) {
-            btnPrimary.setText("Accept Pickup");
+            btnPrimary.setText("Accept pickup");
             btnPrimary.setOnClickListener(v -> acceptDonation(btnPrimary));
         } else if (isNgo && isMyPickup && Donation.STATUS_ACCEPTED.equals(d.status)) {
-            btnPrimary.setText("Mark Picked Up");
+            btnPrimary.setText("Mark as picked up");
             btnPrimary.setOnClickListener(v -> updateStatus(btnPrimary, Donation.STATUS_PICKED_UP, "pickedUpAt"));
         } else if (!isNgo && Donation.STATUS_ACCEPTED.equals(d.status)) {
-            btnPrimary.setText("Hand Over Food");
+            btnPrimary.setText("Mark as handed over");
             btnPrimary.setOnClickListener(v -> updateStatus(btnPrimary, Donation.STATUS_PICKED_UP, "pickedUpAt"));
         } else if (isNgo && isMyPickup && Donation.STATUS_PICKED_UP.equals(d.status)) {
-            btnPrimary.setText("Mark Delivered");
+            btnPrimary.setText("Mark as delivered");
             btnPrimary.setOnClickListener(v -> updateStatus(btnPrimary, Donation.STATUS_DELIVERED, "deliveredAt"));
         } else {
             btnPrimary.setVisibility(View.GONE);
@@ -213,7 +213,7 @@ public class DonationDetailsActivity extends BaseActivity {
         // Donors can withdraw a listing until an NGO claims it
         if (!isNgo && Donation.STATUS_AVAILABLE.equals(d.status)) {
             btnSecondary.setVisibility(View.VISIBLE);
-            btnSecondary.setText("Delete Listing");
+            btnSecondary.setText("Delete");
             btnSecondary.setIconResource(R.drawable.ic_delete);
             btnSecondary.setOnClickListener(v -> confirmDelete());
         }
@@ -253,7 +253,7 @@ public class DonationDetailsActivity extends BaseActivity {
     }
 
     private void confirmDelete() {
-        new AlertDialog.Builder(this)
+        Ui.destructive(new MaterialAlertDialogBuilder(this)
                 .setTitle("Delete donation")
                 .setMessage("Remove \"" + donation.foodName + "\" from the feed?")
                 .setPositiveButton("Delete", (dialog, which) -> {
@@ -266,7 +266,7 @@ public class DonationDetailsActivity extends BaseActivity {
                             });
                 })
                 .setNegativeButton("Cancel", null)
-                .show();
+                .show());
     }
 
     /** Claims the donation in a transaction so two NGOs cannot accept the same food. */

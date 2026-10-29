@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One editable account detail. The pencil is the signifier that the row can be tapped. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/space_16"
+    android:paddingVertical="@dimen/space_12">
+
+    <ImageView
+        android:id="@+id/iv_row_icon"
+        android:layout_width="@dimen/icon"
+        android:layout_height="@dimen/icon"
+        android:contentDescription="@null"
+        app:tint="@color/ink_muted" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_16"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_row_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+        <TextView
+            android:id="@+id/tv_row_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.SNH.Body" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_row_edit"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="Edit"
+        android:src="@drawable/ic_edit"
+        app:tint="@color/ink_faint" />
+</LinearLayout>

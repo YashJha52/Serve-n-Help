@@ -1,43 +1,69 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ServenHelp" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
-        <item name="colorPrimaryContainer">@color/primary_container</item>
-        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorOnSecondary">@color/on_secondary</item>
-        <item name="colorSecondaryContainer">@color/secondary_container</item>
-        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
-        <item name="colorTertiary">@color/tertiary</item>
-        <item name="colorOnTertiary">@color/on_tertiary</item>
-        <item name="colorTertiaryContainer">@color/tertiary_container</item>
-        <item name="colorOnTertiaryContainer">@color/on_tertiary_container</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorOnBackground">@color/on_background</item>
+    <!--
+        Serve-N-Help theme. Every colour comes from colors.xml tokens, so the
+        dark palette in values-night swaps in without per-screen changes.
+    -->
+    <style name="Base.Theme.ServenHelp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">@color/on_accent</item>
+        <item name="colorPrimaryContainer">@color/accent_tint</item>
+        <item name="colorOnPrimaryContainer">@color/accent_strong</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/on_accent</item>
+        <item name="colorSecondaryContainer">@color/accent_tint</item>
+        <item name="colorOnSecondaryContainer">@color/accent_strong</item>
+        <item name="colorTertiary">@color/info</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorOnBackground">@color/ink</item>
         <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/on_surface</item>
-        <item name="colorSurfaceVariant">@color/surface_variant</item>
-        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
-        <item name="colorOutline">@color/outline</item>
-        <item name="colorOutlineVariant">@color/outline_variant</item>
-        <item name="colorError">@color/error</item>
-        <item name="colorOnError">@color/on_error</item>
-        <item name="colorErrorContainer">@color/error_container</item>
-        <item name="colorOnErrorContainer">@color/on_error_container</item>
-        <item name="android:statusBarColor">@color/surface</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorSurfaceVariant">@color/surface_alt</item>
+        <item name="colorOnSurfaceVariant">@color/ink_muted</item>
+        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_alt</item>
+        <item name="colorOutline">@color/ink_faint</item>
+        <item name="colorOutlineVariant">@color/line</item>
+        <item name="colorError">@color/danger</item>
+        <item name="colorOnError">@color/surface</item>
+
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="bottomNavigationStyle">@style/Widget.ServenHelp.BottomNavigation</item>
-    </style>
+        <item name="android:windowLightNavigationBar">true</item>
 
-    <!-- Light green pill behind the selected tab instead of the default dark one -->
-    <style name="Widget.ServenHelp.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
-        <item name="itemActiveIndicatorStyle">@style/Widget.ServenHelp.BottomNavigation.Indicator</item>
-    </style>
-
-    <style name="Widget.ServenHelp.BottomNavigation.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primary_fixed</item>
+        <item name="materialButtonStyle">@style/Widget.SNH.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.SNH.Button.Outlined</item>
+        <item name="textInputStyle">@style/Widget.SNH.TextInput</item>
+        <item name="materialCardViewStyle">@style/Widget.SNH.Card</item>
+        <item name="bottomNavigationStyle">@style/Widget.SNH.BottomNavigation</item>
+        <item name="checkboxStyle">@style/Widget.SNH.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.SNH.RadioButton</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.SNH.Fab</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.SNH.Dialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.SNH.Dialog</item>
+        <item name="android:timePickerDialogTheme">@style/ThemeOverlay.SNH.Picker</item>
+        <item name="android:datePickerDialogTheme">@style/ThemeOverlay.SNH.Picker</item>
     </style>
 
     <style name="Theme.ServenHelp" parent="Base.Theme.ServenHelp" />
+
+    <style name="ThemeOverlay.SNH.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="shapeAppearanceOverlay">@style/Shape.SNH.Card</item>
+    </style>
+
+    <!-- Clock and calendar headers use the accent instead of a stray secondary colour -->
+    <style name="ThemeOverlay.SNH.Picker" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="android:colorBackground">@color/surface</item>
+    </style>
 </resources>

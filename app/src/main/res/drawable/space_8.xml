@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Transparent 8dp gap for LinearLayout showDividers; hidden children get no gap. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <size android:width="@dimen/space_8" android:height="@dimen/space_8" />
+    <solid android:color="@android:color/transparent" />
+</shape>

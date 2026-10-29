@@ -62,19 +62,19 @@ public class CreateAccountActivity extends BaseActivity {
             styleRoleCard(cardDonor, ivDonorChecked, true);
             styleRoleCard(cardNgo, ivNgoChecked, false);
             tvLicenseLabel.setText(R.string.fssai_label);
-            tilOf(etLicense).setHint(getString(R.string.fssai_hint));
+            etLicense.setHint(getString(R.string.fssai_hint));
             tilOf(etLicense).setHelperText(getString(R.string.fssai_helper));
-            tilOf(etOrgName).setHint(getString(R.string.org_name_hint));
+            etOrgName.setHint(getString(R.string.org_name_hint));
             btnSubmit.setText(R.string.create_restaurant_account);
         });
         cardNgo.setOnClickListener(v -> {
             selectedRole = FirebaseRepo.ROLE_NGO;
             styleRoleCard(cardNgo, ivNgoChecked, true);
             styleRoleCard(cardDonor, ivDonorChecked, false);
-            tvLicenseLabel.setText("NGO Registration No. (Darpan ID)");
-            tilOf(etLicense).setHint("e.g. MH/2023/0123456");
-            tilOf(etLicense).setHelperText("Used to verify your organisation before pickups.");
-            tilOf(etOrgName).setHint("e.g. Hope Community Food Bank");
+            tvLicenseLabel.setText("NGO Darpan ID");
+            etLicense.setHint("e.g. MH/2023/0123456");
+            tilOf(etLicense).setHelperText("Your NGO Darpan ID, used to verify your organisation.");
+            etOrgName.setHint("e.g. Hope Community Food Bank");
             btnSubmit.setText("Create NGO Account");
         });
 
@@ -181,8 +181,8 @@ public class CreateAccountActivity extends BaseActivity {
         if (pass.matches(".*[A-Za-z].*") && pass.matches(".*\\d.*")) score++;
         if (pass.length() >= 12 || pass.matches(".*[^A-Za-z0-9].*")) score++;
         if (pass.isEmpty()) score = 0;
-        int color = ContextCompat.getColor(this, score <= 1 ? R.color.error : score == 2 ? R.color.secondary : R.color.primary);
-        int empty = ContextCompat.getColor(this, R.color.surface_container);
+        int color = ContextCompat.getColor(this, score <= 1 ? R.color.danger : score == 2 ? R.color.warning : R.color.accent);
+        int empty = ContextCompat.getColor(this, R.color.line);
         for (int i = 0; i < bar.getChildCount(); i++) {
             bar.getChildAt(i).setBackgroundColor(i < Math.max(score, pass.isEmpty() ? 0 : 1) ? color : empty);
         }
@@ -195,11 +195,11 @@ public class CreateAccountActivity extends BaseActivity {
     }
 
     private void styleRoleCard(MaterialCardView card, ImageView check, boolean selected) {
-        card.setCardBackgroundColor(ContextCompat.getColor(this, selected ? R.color.primary_fixed_light : R.color.surface_container_lowest));
-        card.setStrokeColor(ContextCompat.getColor(this, selected ? R.color.primary : R.color.divider));
-        card.setStrokeWidth((int) (getResources().getDisplayMetrics().density * (selected ? 1.5f : 1f)));
-        check.setBackgroundResource(selected ? R.drawable.bg_status_dot_active : R.drawable.bg_pill_neutral);
-        check.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, selected ? R.color.on_primary : R.color.surface_dim)));
+        card.setCardBackgroundColor(ContextCompat.getColor(this, selected ? R.color.accent_tint : R.color.surface));
+        card.setStrokeColor(ContextCompat.getColor(this, selected ? R.color.accent : R.color.line));
+        card.setStrokeWidth((int) (getResources().getDisplayMetrics().density * (selected ? 2f : 1f)));
+        check.setBackgroundResource(selected ? R.drawable.bg_check_on : R.drawable.bg_check_off);
+        check.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, selected ? R.color.on_accent : android.R.color.transparent)));
         check.setContentDescription(selected ? "Selected" : "Not selected");
     }
 

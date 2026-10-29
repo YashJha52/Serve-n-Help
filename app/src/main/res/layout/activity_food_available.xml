@@ -1,382 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Donation feed (NGO home / donor listings): search and filter, then the list. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_food_available"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    tools:context=".FoodAvailableActivity">
+    android:background="@color/bg"
+    android:orientation="vertical">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/surface"
-        app:elevation="2dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_4"
+        android:paddingTop="@dimen/space_8"
+        android:paddingEnd="@dimen/screen_margin">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:contentDescription="Brand logo"
-                    android:src="@drawable/ic_serve_n_help_logo" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:id="@+id/tv_feed_header_name"
-                        android:text="Royal Curry House"
-                        android:textColor="@color/on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_feed_header_role"
-                        android:text="Donations"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:id="@+id/btn_feed_notifications"
-                    android:contentDescription="Notifications"
-                    android:src="@drawable/ic_notifications"
-                    app:tint="@color/on_surface_variant" />
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_status_dot_active"
-                    android:id="@+id/iv_feed_profile"
-                    android:contentDescription="Profile avatar"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/on_primary" />
-            </LinearLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Main Scrollable Feed -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="90dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <ImageButton
+            android:id="@+id/btn_back_food_available"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="12dp">
+            android:layout_marginStart="@dimen/space_12"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- Subheader Bar with Title & Quick Add Button -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_feed_header_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:maxWidth="180dp"
+                    android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+                <TextView
+                    android:id="@+id/tv_feed_header_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_8"
+                    android:textAppearance="@style/TextAppearance.SNH.Caption"
+                    android:textColor="@color/accent" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_feed_title_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food available"
+                android:textAppearance="@style/TextAppearance.SNH.Title" />
+
+            <TextView
+                android:id="@+id/tv_feed_live_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_feed_notifications"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="Updates"
+            android:src="@drawable/ic_notifications" />
+
+        <ImageView
+            android:id="@+id/iv_feed_profile"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="@drawable/bg_icon_button_filled"
+            android:clickable="true"
+            android:contentDescription="Your account"
+            android:focusable="true"
+            android:scaleType="center"
+            android:src="@drawable/ic_person"
+            app:tint="@color/ink" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="96dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/btn_back_food_available"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Go back"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/on_surface" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_feed_title_main"
-                        android:text="Food Available"
-                        android:textColor="@color/on_surface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="6dp"
-                            android:layout_height="6dp"
-                            android:background="@drawable/bg_status_dot_active" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:letterSpacing="0.03"
-                            android:id="@+id/tv_feed_live_count"
-                            android:text="LIVE INVENTORY • 4 ACTIVE BATCHES"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_quick_add_food"
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:backgroundTint="@color/primary"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:paddingHorizontal="14dp"
-                    android:text="Add Food"
-                    android:textAllCaps="false"
-                    android:textColor="@color/on_primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="999dp"
-                    app:icon="@drawable/ic_add"
-                    app:iconGravity="textStart"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/on_primary" />
-            </LinearLayout>
-
-            <!-- Search Strip -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded_card_low"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="Search"
-                        android:src="@drawable/ic_search"
-                        app:tint="@color/on_surface_variant" />
-
-                    <EditText
-                        android:id="@+id/et_food_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@null"
-                        android:hint="Search food, category, or notes..."
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:textColor="@color/on_surface"
-                        android:textColorHint="@color/outline"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/btn_filter_tune"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_rounded_card_low"
-                    android:contentDescription="Filter"
-                    android:src="@drawable/ic_tune"
-                    app:tint="@color/on_surface_variant" />
-            </LinearLayout>
-
-            <!-- Horizontal Category Filter Chips -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Active Chip -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_primary"
-                        android:drawableStart="@drawable/ic_check"
-                        android:drawablePadding="4dp"
-                        android:drawableTint="@color/on_primary_fixed"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp"
-                        android:id="@+id/chip_all"
-                        android:text="All (4)"
-                        android:textColor="@color/on_primary_fixed"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_pill_neutral"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp"
-                        android:id="@+id/chip_cat1"
-                        android:text="Cooked Rice"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_pill_neutral"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp"
-                        android:id="@+id/chip_cat2"
-                        android:text="Biryani"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_pill_neutral"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp"
-                        android:id="@+id/chip_cat3"
-                        android:text="Breads / Rotis"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_pill_neutral"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp"
-                        android:id="@+id/chip_cat4"
-                        android:text="Curries &amp; Veg"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- Donor Rating Highlight Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                app:cardBackgroundColor="@color/surface_container_highest"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
-
+                <!-- Search + map -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/space_16"
                     android:orientation="horizontal"
-                    android:padding="12dp">
+                    android:paddingHorizontal="@dimen/screen_margin">
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_pill_tertiary"
-                        android:contentDescription="Volunteer icon"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_volunteer_activism"
-                        app:tint="@color/tertiary" />
+                    <EditText
+                        android:id="@+id/et_food_search"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/touch_target"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_search"
+                        android:drawablePadding="@dimen/space_8"
+                        android:hint="Search food, area or notes"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingHorizontal="@dimen/space_12"
+                        android:textColor="@color/ink"
+                        android:textColorHint="@color/ink_muted"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_search"
+                        app:drawableTint="@color/ink_muted" />
+
+                    <ImageButton
+                        android:id="@+id/btn_filter_tune"
+                        android:layout_width="@dimen/touch_target"
+                        android:layout_height="@dimen/touch_target"
+                        android:layout_marginStart="@dimen/space_8"
+                        android:background="@drawable/bg_search"
+                        android:contentDescription="Show on map"
+                        android:src="@drawable/ic_location_on"
+                        app:tint="@color/accent" />
+                </LinearLayout>
+
+                <!-- Category filter -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_12"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/screen_margin"
+                    android:scrollbars="none">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tv_feed_banner_title"
-                            android:text="High Donor Rating (4.9★)"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tv_feed_banner_text"
-                            android:text="Your food safely nourished 140 people this week"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp" />
+                        <TextView android:id="@+id/chip_all" style="@style/Widget.SNH.Chip" android:text="All" />
+                        <TextView android:id="@+id/chip_cat1" style="@style/Widget.SNH.Chip" android:text="Cooked meals" />
+                        <TextView android:id="@+id/chip_cat2" style="@style/Widget.SNH.Chip" android:text="Bakery" />
+                        <TextView android:id="@+id/chip_cat3" style="@style/Widget.SNH.Chip" android:text="Raw produce" />
+                        <TextView android:id="@+id/chip_cat4" style="@style/Widget.SNH.Chip" android:text="Packaged food" />
                     </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- Impact / hint line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/screen_margin"
+                    android:layout_marginTop="@dimen/space_16"
+                    android:background="@drawable/bg_band"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_12">
+
+                    <TextView
+                        android:id="@+id/tv_feed_banner_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                    <TextView
+                        android:id="@+id/tv_feed_banner_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Food Items Feed Container -->
-            <LinearLayout
-                android:id="@+id/layout_available_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:orientation="vertical">
-
-                <include layout="@layout/item_food_available" />
+                <LinearLayout
+                    android:id="@+id/layout_available_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_16"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/screen_margin" />
             </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Navigation Bar -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btn_quick_add_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/space_16"
+            android:text="@string/add_food_cta"
+            android:visibility="gone"
+            app:icon="@drawable/ic_add" />
+    </FrameLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_feed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/surface"
-        app:elevation="8dp"
-        app:itemIconTint="@color/primary"
-        app:itemTextColor="@color/primary"
+        android:background="@drawable/bg_bottom_bar"
         app:menu="@menu/bottom_nav_menu" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

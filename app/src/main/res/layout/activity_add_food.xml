@@ -1,799 +1,455 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Post surplus food: what, when, where, how it travels. Publish stays pinned in the thumb zone. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_add_food"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    tools:context=".AddFoodActivity">
+    android:background="@color/bg"
+    android:orientation="vertical">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Top bar -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface"
-        app:elevation="2dp">
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/space_4">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingStart="4dp"
-            android:paddingEnd="16dp">
+        <ImageButton
+            android:id="@+id/btn_back_add_food"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_4"
+            android:text="New donation"
+            android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+    </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_back_add_food"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Go back"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/on_surface" />
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="Brand logo"
-                    android:src="@drawable/ic_serve_n_help_logo" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:text="@string/new_donation"
-                    android:textColor="@color/on_surface"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_status_dot_active"
-                    android:contentDescription="Profile avatar"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/on_primary" />
-            </LinearLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Scrollable Content -->
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="40dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="12dp">
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/space_24">
 
-            <!-- Guidance Intro Banner -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_card_low"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/bg_pill_primary"
-                    android:contentDescription="Donation icon"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_volunteer_activism"
-                    app:tint="@color/primary" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/add_food_title"
-                        android:textColor="@color/on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/add_food_subtitle"
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Food Item Name -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="@string/food_item_name"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/space_8"
+                android:text="What's left over?"
+                android:textAppearance="@style/TextAppearance.SNH.Title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:text="NGOs near you see this as soon as you publish."
+                android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
+            <!-- What -->
+            <TextView
+                style="@style/Widget.SNH.SectionTitle"
+                android:layout_marginTop="@dimen/space_24"
+                android:text="The food" />
+
+            <TextView
+                style="@style/Widget.SNH.FieldLabel"
+                android:text="Dish or item" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:boxCornerRadiusBottomEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:startIconDrawable="@drawable/ic_restaurant"
-                app:startIconTint="@color/outline">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:hint="e.g. Veg biryani, chapatis, bread loaves"
                     android:id="@+id/et_food_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="e.g., Fresh Vegetable Biryani"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp" />
+                    style="@style/Widget.SNH.EditText"
+                    android:inputType="textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Food Category Dropdown -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/food_category"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                style="@style/Widget.SNH.FieldLabel"
+                android:text="Category" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.SNH.TextInput.Dropdown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:boxCornerRadiusBottomEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:startIconDrawable="@drawable/ic_category"
-                app:startIconTint="@color/outline">
+                android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
                     android:id="@+id/actv_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="@dimen/button_height"
                     android:inputType="none"
-                    android:text="Cooked Meals"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp" />
+                    android:paddingStart="@dimen/space_16"
+                    android:textColor="@color/ink"
+                    android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Quantity & Unit (2-Column Grid) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/quantity"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        style="@style/Widget.SNH.FieldLabel"
+                        android:text="How much" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:startIconDrawable="@drawable/ic_scale"
-                        app:startIconTint="@color/outline">
+                        android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:hint="20"
                             android:id="@+id/et_quantity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/Widget.SNH.EditText"
                             android:inputType="number"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
+                            android:maxLength="5" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_8"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/unit"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        style="@style/Widget.SNH.FieldLabel"
+                        android:text="Unit" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/Widget.SNH.TextInput.Dropdown"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp">
+                        android:layout_height="wrap_content">
 
                         <AutoCompleteTextView
                             android:id="@+id/actv_unit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="@dimen/button_height"
                             android:inputType="none"
-                            android:text="Portions / Meals"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
+                            android:paddingStart="@dimen/space_16"
+                            android:textColor="@color/ink"
+                            android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Preparation Time Picker -->
+            <!-- When -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/prep_time"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                style="@style/Widget.SNH.SectionTitle"
+                android:text="Timing" />
+
+            <TextView
+                style="@style/Widget.SNH.FieldLabel"
+                android:text="When was it made?" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:boxCornerRadiusBottomEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:endIconDrawable="@drawable/ic_calendar_today"
-                app:endIconMode="custom"
-                app:endIconTint="@color/outline"
-                app:startIconDrawable="@drawable/ic_schedule"
-                app:startIconTint="@color/outline">
+                app:startIconDrawable="@drawable/ic_schedule">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_prep_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.SNH.EditText"
+                    android:cursorVisible="false"
                     android:focusable="false"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp" />
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Expiry Date & Expiry Time (2-Column Grid) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_before_date"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        style="@style/Widget.SNH.FieldLabel"
+                        android:text="Good until (date)" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:startIconDrawable="@drawable/ic_calendar_today"
-                        app:startIconTint="@color/outline">
+                        app:startIconDrawable="@drawable/ic_calendar_today">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_expiry_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/Widget.SNH.EditText"
+                            android:cursorVisible="false"
                             android:focusable="false"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp" />
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/space_8"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/expiry_time"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        style="@style/Widget.SNH.FieldLabel"
+                        android:text="Time" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:startIconDrawable="@drawable/ic_alarm"
-                        app:startIconTint="@color/outline">
+                        app:startIconDrawable="@drawable/ic_alarm">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:hint="Pick a time"
                             android:id="@+id/et_expiry_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/Widget.SNH.EditText"
+                            android:cursorVisible="false"
                             android:focusable="false"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp" />
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Safety Reminder -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_expiry_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/space_8"
+                android:drawablePadding="@dimen/space_8"
+                android:text="Cooked meals must be eaten within 6 hours for food safety."
+                android:textAppearance="@style/TextAppearance.SNH.BodySmall"
+                android:textColor="@color/warning"
+                app:drawableStartCompat="@drawable/ic_warning"
+                app:drawableTint="@color/warning" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="Warning"
-                    android:src="@drawable/ic_warning"
-                    app:tint="@color/secondary" />
+            <!-- Where -->
+            <TextView
+                style="@style/Widget.SNH.SectionTitle"
+                android:text="Pickup point" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:id="@+id/tv_expiry_hint"
-                    android:text="Cooked meals must be consumed within 6 hours for food safety."
-                    android:textColor="@color/secondary"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Pickup Location Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                android:layout_marginTop="@dimen/space_12">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/space_12"
+                    android:paddingStart="@dimen/space_16"
+                    android:paddingEnd="@dimen/space_8">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_pin_drop"
+                        app:tint="@color/accent" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="Pin drop"
-                            android:src="@drawable/ic_pin_drop"
-                            app:tint="@color/primary" />
+                        android:layout_marginHorizontal="@dimen/space_12"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="@string/pickup_location"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_change_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Change Address"
-                            android:textColor="@color/primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_card_low"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:id="@+id/tv_pickup_name"
-                            android:text="Royal Curry House"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                        <TextView
                             android:id="@+id/tv_pickup_address"
-                            android:text="42 100ft Road, Indiranagar, Bangalore, 560038"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_pill_primary"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="3dp"
-                                android:id="@+id/tv_pickup_tag1"
-                                android:text="Kitchen Ground Floor"
-                                android:textColor="@color/primary"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="3dp"
-                                android:id="@+id/tv_pickup_tag2"
-                                android:text="Rear Alley Gate 2"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="10sp" />
-                        </LinearLayout>
+                            android:layout_marginTop="@dimen/space_4"
+                            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tv_change_address"
+                        style="@style/Widget.SNH.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set on map" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Dietary Notes & Quick Tags -->
+            <!-- Notes -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/dietary_notes"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:boxCornerRadiusBottomEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_dietary_notes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:lines="3"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                style="@style/Widget.SNH.SectionTitle"
+                android:text="Notes for the NGO" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/space_12"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:id="@+id/chip_veg"
-                    android:text="+ Vegetarian"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:id="@+id/chip_nut_free"
-                    android:text="+ Nut-Free"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:id="@+id/chip_halal"
-                    android:text="+ Halal"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
+                <TextView android:id="@+id/chip_veg" style="@style/Widget.SNH.Chip" android:text="Vegetarian" />
+                <TextView android:id="@+id/chip_nut_free" style="@style/Widget.SNH.Chip" android:text="Nut-free" />
+                <TextView android:id="@+id/chip_halal" style="@style/Widget.SNH.Chip" android:text="Halal" />
             </LinearLayout>
 
-            <!-- Delivery Method -->
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="@string/select_delivery_method"
-                android:textColor="@color/on_surface"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/space_12">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:hint="Allergens, packaging, which gate to come to…"
+                    android:id="@+id/et_dietary_notes"
+                    style="@style/Widget.SNH.EditText"
+                    android:gravity="top"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Delivery -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Choose how this batch reaches the beneficiary"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="12sp" />
+                style="@style/Widget.SNH.SectionTitle"
+                android:text="Who moves the food?" />
 
-            <!-- Option 1: Request Pickup -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_option_pickup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/primary"
-                app:strokeWidth="1.5dp">
+                android:layout_marginTop="@dimen/space_12"
+                android:clickable="true"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="14dp">
+                    android:paddingVertical="@dimen/space_12"
+                    android:paddingStart="@dimen/space_4"
+                    android:paddingEnd="@dimen/space_16">
 
                     <RadioButton
                         android:id="@+id/rb_pickup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/primary"
-                        android:checked="true" />
+                        android:layout_width="@dimen/touch_target"
+                        android:layout_height="@dimen/touch_target"
+                        android:checked="true"
+                        android:contentDescription="NGO collects" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/request_pickup"
-                                android:textColor="@color/on_surface"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:background="@drawable/bg_pill_primary"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="2dp"
-                                android:text="Recommended"
-                                android:textColor="@color/on_primary_fixed"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="NGO or verified volunteer will collect the food from your restaurant kitchen."
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                            android:text="NGO collects it"
+                            android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_pill_primary"
-                        android:contentDescription="Pickup truck"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_local_shipping"
-                        app:tint="@color/primary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_4"
+                            android:text="A volunteer picks it up from your kitchen. Usually the quickest."
+                            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Option 2: Self Delivery -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_option_self"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                android:layout_marginTop="@dimen/space_8"
+                android:clickable="true"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="14dp">
+                    android:paddingVertical="@dimen/space_12"
+                    android:paddingStart="@dimen/space_4"
+                    android:paddingEnd="@dimen/space_16">
 
                     <RadioButton
                         android:id="@+id/rb_self_delivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/outline"
-                        android:checked="false" />
+                        android:layout_width="@dimen/touch_target"
+                        android:layout_height="@dimen/touch_target"
+                        android:contentDescription="I'll deliver" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/self_delivery"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:text="We'll drop it off"
+                            android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Restaurant staff will transport and deliver the food directly to the NGO center."
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="11sp" />
+                            android:layout_marginTop="@dimen/space_4"
+                            android:text="Your staff take the food to the NGO that accepts it."
+                            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_pill_neutral"
-                        android:contentDescription="Self delivery walk"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_directions_walk"
-                        app:tint="@color/on_surface_variant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <!-- Safety Affirmation Disclaimer -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_rounded_card_low"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Verified shield"
-                    android:src="@drawable/ic_verified_user"
-                    app:tint="@color/primary" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="By publishing, you certify that the food has been handled in accordance with FSSAI safety norms and packed hygienically."
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Primary Publish CTA Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_publish_donation"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/primary"
-                android:text="@string/publish_donation"
-                android:textAllCaps="false"
-                android:textColor="@color/on_primary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:cornerRadius="12dp"
-                app:icon="@drawable/ic_arrow_forward"
-                app:iconGravity="textEnd"
-                app:iconSize="18dp"
-                app:iconTint="@color/on_primary" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </ScrollView>
+
+    <!-- Pinned action bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_bar"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_margin"
+        android:paddingTop="@dimen/space_12"
+        android:paddingBottom="@dimen/space_12">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_publish_donation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/publish_donation" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center"
+            android:text="By publishing you confirm the food was handled and packed safely."
+            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+    </LinearLayout>
+</LinearLayout>

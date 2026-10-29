@@ -1,1060 +1,708 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Donation details: what it is, how far along, who's handling it, where. Actions pinned below. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_donation_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    tools:context=".DonationDetailsActivity">
+    android:background="@color/bg"
+    android:orientation="vertical">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Top bar -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface"
-        app:elevation="2dp">
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/space_4">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingStart="4dp"
-            android:paddingEnd="16dp">
+        <ImageButton
+            android:id="@+id/btn_back_details"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_details_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_4"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.SNH.Label"
+            android:textColor="@color/ink_muted" />
 
-                <ImageButton
-                    android:id="@+id/btn_back_details"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Go back"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/on_surface" />
+        <ImageButton
+            android:id="@+id/btn_details_share"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="Share this donation"
+            android:src="@drawable/ic_share" />
 
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="Brand logo"
-                    android:src="@drawable/ic_serve_n_help_logo" />
+        <ImageButton
+            android:id="@+id/btn_details_more"
+            style="@style/Widget.SNH.IconButton"
+            android:contentDescription="More options"
+            android:src="@drawable/ic_more_vert" />
+    </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:text="Donation Details"
-                    android:textColor="@color/on_surface"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_status_dot_active"
-                    android:contentDescription="Profile avatar"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/on_primary" />
-            </LinearLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Scrollable Content -->
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="100dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="8dp">
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/space_24">
 
-            <!-- Subheader Action Row -->
+            <!-- Headline -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_details_status"
+                    style="@style/Widget.SNH.Tag" />
+
+                <TextView
+                    android:id="@+id/tv_details_category"
+                    style="@style/Widget.SNH.Tag"
+                    android:layout_marginStart="@dimen/space_8" />
+
+                <TextView
+                    android:id="@+id/tv_details_diet"
+                    style="@style/Widget.SNH.Tag"
+                    android:layout_marginStart="@dimen/space_8" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_details_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_12"
+                android:textAppearance="@style/TextAppearance.SNH.Display" />
+
+            <TextView
+                android:id="@+id/tv_details_expiry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8"
+                android:drawablePadding="@dimen/space_8"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.SNH.Label"
+                android:textColor="@color/warning"
+                app:drawableStartCompat="@drawable/ic_schedule"
+                app:drawableTint="@color/warning" />
+
+            <!-- Facts band -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_24"
+                android:background="@drawable/bg_band"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/space_16">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/space_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quantity"
+                        android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+                    <TextView
+                        android:id="@+id/tv_details_servings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/space_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weight"
+                        android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+                    <TextView
+                        android:id="@+id/tv_details_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/space_16">
+
+                    <TextView
+                        android:id="@+id/tv_details_containers_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Made at"
+                        android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+                    <TextView
+                        android:id="@+id/tv_details_containers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Progress -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_32"
+                android:layout_marginBottom="@dimen/space_16"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_details_id"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:drawableStart="@drawable/ic_tag"
-                    android:drawablePadding="4dp"
-                    android:drawableTint="@color/primary"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:text="#SNH-8821"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
+                    android:layout_weight="1"
+                    android:text="Progress"
+                    android:textAppearance="@style/TextAppearance.SNH.Section" />
 
                 <TextView
+                    android:id="@+id/tv_details_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_pill_primary"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
-                    android:id="@+id/tv_details_status"
-                    android:text="Active Pickup"
-                    android:textColor="@color/on_primary_fixed"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/btn_details_share"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Share"
-                    android:src="@drawable/ic_share"
-                    app:tint="@color/on_surface_variant" />
-
-                <ImageButton
-                    android:id="@+id/btn_details_more"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="More"
-                    android:src="@drawable/ic_more_vert"
-                    app:tint="@color/on_surface_variant" />
+                    android:textAppearance="@style/TextAppearance.SNH.Caption" />
             </LinearLayout>
 
-            <!-- Food Hero Card -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Step 1 -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_step1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_step_todo"
+                        android:contentDescription="Published"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_check" />
+                    <View
+                        android:id="@+id/line_step1"
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="@dimen/space_4"
+                        android:layout_weight="1"
+                        android:minHeight="16dp"
+                        android:background="@color/line" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:paddingBottom="@dimen/space_16">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_neutral"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp"
-                            android:id="@+id/tv_details_category"
-                            android:text="Cooked Food"
-                            android:textColor="@color/on_surface"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:background="@drawable/bg_rounded_card_low"
-                            android:paddingHorizontal="6dp"
-                            android:paddingVertical="3dp"
-                            android:id="@+id/tv_details_diet"
-                            android:text="Pure Veg"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="11sp" />
-
-                        <View
+                            android:id="@+id/tv_step1_title"
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Published"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
 
                         <TextView
+                            android:id="@+id/tv_step1_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_secondary"
-                            android:drawableStart="@drawable/ic_schedule"
-                            android:drawablePadding="4dp"
-                            android:drawableTint="@color/secondary"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp"
-                            android:id="@+id/tv_details_expiry"
-                            android:text="Expires in 2h 45m"
-                            android:textColor="@color/secondary"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/TextAppearance.SNH.Caption" />
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tv_details_title"
+                        android:id="@+id/tv_step1_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Vegetable Hyderabadi Biryani"
-                        android:textColor="@color/on_surface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Step 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                    <!-- 3-Column Stats Box -->
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_step2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_step_todo"
+                        android:contentDescription="Accepted by an NGO"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_handshake" />
+                    <View
+                        android:id="@+id/line_step2"
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="@dimen/space_4"
+                        android:layout_weight="1"
+                        android:minHeight="16dp"
+                        android:background="@color/line" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/space_16">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_step2_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Accepted by an NGO"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                        <TextView
+                            android:id="@+id/tv_step2_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_step2_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Step 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_step3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_step_todo"
+                        android:contentDescription="Picked up"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_local_shipping" />
+                    <View
+                        android:id="@+id/line_step3"
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="@dimen/space_4"
+                        android:layout_weight="1"
+                        android:minHeight="16dp"
+                        android:background="@color/line" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/space_16">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_step3_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Picked up"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                        <TextView
+                            android:id="@+id/tv_step3_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_step3_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Step 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_step4"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_step_todo"
+                        android:contentDescription="Delivered"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_volunteer_activism" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/space_16">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_step4_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Delivered"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                        <TextView
+                            android:id="@+id/tv_step4_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_step4_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Pickup -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_32"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pickup"
+                    android:textAppearance="@style/TextAppearance.SNH.Section" />
+
+                <TextView
+                    android:id="@+id/tv_details_method"
+                    style="@style/Widget.SNH.Tag" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_12">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Partner -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_rounded_card_low"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingVertical="12dp">
+                        android:padding="@dimen/space_16">
+
+                        <TextView
+                            android:id="@+id/tv_details_avatar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_avatar"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.SNH.Label" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_12"
                             android:layout_weight="1"
-                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_details_ngo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_restaurant"
-                                android:drawablePadding="4dp"
-                                android:drawableTint="@color/outline"
-                                android:text="Servings"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
+                                android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
 
                             <TextView
+                                android:id="@+id/tv_details_ngo_sub"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:id="@+id/tv_details_servings"
-                                android:text="15 Portions"
-                                android:textColor="@color/on_surface"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="24dp"
-                            android:background="@color/divider" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_scale"
-                                android:drawablePadding="4dp"
-                                android:drawableTint="@color/outline"
-                                android:text="Net Weight"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:id="@+id/tv_details_weight"
-                                android:text="~7.5 kg"
-                                android:textColor="@color/on_surface"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="24dp"
-                            android:background="@color/divider" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_inventory_2"
-                                android:drawablePadding="4dp"
-                                android:drawableTint="@color/outline"
-                                android:id="@+id/tv_details_containers_label"
-                                android:text="Containers"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:id="@+id/tv_details_containers"
-                                android:text="3 Boxes"
-                                android:textColor="@color/on_surface"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:textAppearance="@style/TextAppearance.SNH.Caption" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Live Status Tracker Timeline Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                    <View style="@style/Widget.SNH.Divider" android:layout_marginHorizontal="@dimen/space_16" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
+                    <!-- Contact -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:contentDescription="Route icon"
-                            android:src="@drawable/ic_route"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="Live Status"
-                            android:textColor="@color/on_surface"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_primary"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp"
-                            android:id="@+id/tv_details_step"
-                            android:text="Step 2 of 4"
-                            android:textColor="@color/on_primary_fixed"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <!-- Step 1: Published -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="28dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/bg_status_dot_active"
-                                android:id="@+id/iv_step1"
-                                android:contentDescription="Done"
-                                android:padding="4dp"
-                                android:src="@drawable/ic_check"
-                                app:tint="@color/on_primary" />
-
-                            <View
-                                android:id="@+id/line_step1"
-                                android:layout_width="2dp"
-                                android:layout_height="28dp"
-                                android:background="@color/primary" />
-                        </LinearLayout>
+                        android:minHeight="64dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/space_16"
+                        android:paddingEnd="@dimen/space_8">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:id="@+id/tv_step1_title"
-                                    android:text="Donation Published"
-                                    android:textColor="@color/on_surface"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_step1_time"
-                                    android:text="01:30 PM"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
 
                             <TextView
+                                android:id="@+id/tv_details_contact_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_step1_desc"
-                                android:text="Listed on the community rescue feed"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Step 2: Accepted by NGO -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="28dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/bg_status_dot_active"
-                                android:id="@+id/iv_step2"
-                                android:contentDescription="Active step"
-                                android:padding="4dp"
-                                android:src="@drawable/ic_handshake"
-                                app:tint="@color/on_primary" />
-
-                            <View
-                                android:id="@+id/line_step2"
-                                android:layout_width="2dp"
-                                android:layout_height="28dp"
-                                android:background="@color/divider" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:id="@+id/tv_step2_title"
-                                    android:text="Accepted by NGO"
-                                    android:textColor="@color/primary"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_step2_time"
-                                    android:text="02:00 PM"
-                                    android:textColor="@color/primary"
-                                    android:textSize="11sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:textAppearance="@style/TextAppearance.SNH.Caption" />
 
                             <TextView
+                                android:id="@+id/tv_details_contact_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_step2_desc"
-                                android:text="Claimed by FeedCare Community Foundation"
-                                android:textColor="@color/on_surface"
-                                android:textSize="12sp" />
+                                android:textAppearance="@style/TextAppearance.SNH.Label" />
                         </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/btn_driver_chat"
+                            style="@style/Widget.SNH.IconButton"
+                            android:background="@drawable/bg_icon_button_filled"
+                            android:contentDescription="Send a message"
+                            android:src="@drawable/ic_chat"
+                            android:tint="@color/accent" />
+
+                        <ImageButton
+                            android:id="@+id/btn_driver_call"
+                            style="@style/Widget.SNH.IconButton"
+                            android:layout_marginStart="@dimen/space_8"
+                            android:background="@drawable/bg_icon_button_filled"
+                            android:contentDescription="Call"
+                            android:src="@drawable/ic_call"
+                            android:tint="@color/accent" />
                     </LinearLayout>
 
-                    <!-- Step 3: Picked Up -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                    <View style="@style/Widget.SNH.Divider" android:layout_marginHorizontal="@dimen/space_16" />
 
-                        <LinearLayout
-                            android:layout_width="28dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:id="@+id/iv_step3"
-                                android:contentDescription="Pickup pending"
-                                android:padding="5dp"
-                                android:src="@drawable/ic_local_shipping"
-                                app:tint="@color/outline" />
-
-                            <View
-                                android:id="@+id/line_step3"
-                                android:layout_width="2dp"
-                                android:layout_height="28dp"
-                                android:background="@color/divider" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:id="@+id/tv_step3_title"
-                                    android:text="Picked Up"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_step3_time"
-                                    android:text="Exp. 03:00 PM"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/tv_step3_desc"
-                                android:text="Volunteer on the way to restaurant"
-                                android:textColor="@color/outline"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Step 4: Distributed -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="28dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:id="@+id/iv_step4"
-                                android:contentDescription="Distributed"
-                                android:padding="5dp"
-                                android:src="@drawable/ic_volunteer_activism"
-                                app:tint="@color/outline" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:id="@+id/tv_step4_title"
-                                    android:text="Delivered &amp; Distributed"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_step4_time"
-                                    android:text="Est. 04:00 PM"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/tv_step4_desc"
-                                android:text="Distribution at Indiranagar Shelter"
-                                android:textColor="@color/outline"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Logistics & Partner Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
+                    <!-- Address -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Logistics &amp; Partner"
-                            android:textColor="@color/on_surface"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_tertiary"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp"
-                            android:id="@+id/tv_details_method"
-                            android:text="NGO Pickup"
-                            android:textColor="@color/tertiary"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Partner Info Tile -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_card_low"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_pill_tertiary"
-                                android:gravity="center"
-                                android:id="@+id/tv_details_avatar"
-                                android:text="FC"
-                                android:textColor="@color/tertiary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_details_ngo"
-                                    android:text="FeedCare Foundation"
-                                    android:textColor="@color/on_surface"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_details_ngo_sub"
-                                    android:text="Verified NGO Partner • NGO-KA-2023"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- Driver Info -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginVertical="10dp"
-                            android:background="@color/divider" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:contentDescription="Driver avatar"
-                                android:padding="6dp"
-                                android:src="@drawable/ic_person"
-                                app:tint="@color/on_surface_variant" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_details_contact_name"
-                                    android:text="Arjun Verma"
-                                    android:textColor="@color/on_surface"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/tv_details_contact_phone"
-                                    android:text="+91 98765 43210"
-                                    android:textColor="@color/on_surface_variant"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <ImageButton
-                                android:id="@+id/btn_driver_call"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:contentDescription="Call volunteer"
-                                android:src="@drawable/ic_call"
-                                app:tint="@color/primary" />
-
-                            <ImageButton
-                                android:id="@+id/btn_driver_chat"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:layout_marginStart="8dp"
-                                android:background="@drawable/bg_pill_neutral"
-                                android:contentDescription="Chat volunteer"
-                                android:src="@drawable/ic_chat"
-                                app:tint="@color/tertiary" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Pickup Address Details -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="Pickup"
-                            android:src="@drawable/ic_storefront"
-                            app:tint="@color/on_surface_variant" />
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/space_12"
+                        android:paddingStart="@dimen/space_16"
+                        android:paddingEnd="@dimen/space_8">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_details_address_title"
-                                android:text="Royal Curry House, Kitchen Backgate #2"
-                                android:textColor="@color/on_surface"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                            <TextView
                                 android:id="@+id/tv_details_address"
-                                android:text="100 Feet Rd, 12th Main, Indiranagar, Bengaluru"
-                                android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_4"
+                                android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
                         </LinearLayout>
 
                         <com.google.android.material.button.MaterialButton
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="34dp"
-                            android:backgroundTint="@color/surface_container_high"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
                             android:id="@+id/btn_details_map"
-                            android:text="Map"
-                            android:textAllCaps="false"
-                            android:textColor="@color/primary"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="8dp"
-                            app:icon="@drawable/ic_near_me"
-                            app:iconGravity="textStart"
-                            app:iconSize="14dp"
-                            app:iconTint="@color/primary" />
-                    </LinearLayout>
-
-                    <!-- Packaging & Safety Notes -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_rounded_card_low"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
+                            style="@style/Widget.SNH.Button.Text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Packaging &amp; Safety Notes"
-                            android:textColor="@color/secondary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:id="@+id/tv_details_notes"
-                            android:text="Packed in 3 insulated thermal food grade boxes. Sealed at 65°C. Safe handling labels attached. Keep warm during transit."
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="11sp" />
+                            android:text="Directions"
+                            app:icon="@drawable/ic_near_me" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Environmental Impact Card -->
+            <!-- Notes -->
+            <TextView
+                style="@style/Widget.SNH.SectionTitle"
+                android:text="Notes from the kitchen" />
+
+            <TextView
+                android:id="@+id/tv_details_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8"
+                android:textAppearance="@style/TextAppearance.SNH.Body" />
+
+            <!-- Impact -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/bg_rounded_card_low"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="10dp">
+                android:layout_marginTop="@dimen/space_24"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_details_meals"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawablePadding="@dimen/space_8"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:textAppearance="@style/TextAppearance.SNH.BodySmall"
+                    app:drawableStartCompat="@drawable/ic_volunteer_activism"
+                    app:drawableTint="@color/accent" />
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:contentDescription="Eco icon"
-                        android:src="@drawable/ic_eco"
-                        app:tint="@color/primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:id="@+id/tv_details_co2"
-                        android:text="CO₂ Savings: 18.7 kg"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_details_co2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|end"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:contentDescription="Meals icon"
-                        android:src="@drawable/ic_volunteer_activism"
-                        app:tint="@color/tertiary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:id="@+id/tv_details_meals"
-                        android:text="Meals Fed: 15 People"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:drawablePadding="@dimen/space_8"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.SNH.BodySmall"
+                    app:drawableStartCompat="@drawable/ic_eco"
+                    app:drawableTint="@color/accent" />
             </LinearLayout>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
-    <!-- Bottom Action Sheet Bar -->
-    <com.google.android.material.card.MaterialCardView
+    <!-- Pinned actions -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:cardBackgroundColor="@color/surface_container_lowest"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="8dp"
-        app:strokeColor="@color/divider"
-        app:strokeWidth="1dp">
+        android:background="@drawable/bg_bottom_bar"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_margin"
+        android:paddingTop="@dimen/space_12"
+        android:paddingBottom="@dimen/space_12">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp">
+            android:divider="@drawable/space_8"
+            android:orientation="horizontal"
+            android:showDividers="middle">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_details"
+                style="@style/Widget.SNH.Button.Danger"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:iconGravity="textStart" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_edit_details"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/surface_container_high"
-                    android:text="Edit Details"
-                    android:textAllCaps="false"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_edit"
-                    app:iconGravity="textStart"
-                    app:iconSize="18dp"
-                    app:iconTint="@color/on_surface" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_handover_food"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1.6"
-                    android:backgroundTint="@color/primary"
-                    android:text="Hand Over Food"
-                    android:textAllCaps="false"
-                    android:textColor="@color/on_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_qr_code_scanner"
-                    app:iconGravity="textStart"
-                    app:iconSize="18dp"
-                    app:iconTint="@color/on_primary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_handover_food"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="Verification"
-                    android:src="@drawable/ic_verified_user"
-                    app:tint="@color/primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:id="@+id/tv_details_footer"
-                    android:text="Requires OTP or QR scan from driver for verification"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                android:layout_weight="1"
+                android:visibility="gone" />
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <TextView
+            android:id="@+id/tv_details_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.SNH.Caption" />
+    </LinearLayout>
+</LinearLayout>

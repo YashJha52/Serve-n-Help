@@ -52,6 +52,7 @@ public class AddFoodActivity extends BaseActivity {
                     longitude = data.getDoubleExtra(LocationPickerActivity.EXTRA_LNG, 0);
                     pickupAddress = data.getStringExtra(LocationPickerActivity.EXTRA_ADDRESS);
                     tvPickupAddress.setText(pickupAddress);
+                    ((TextView) findViewById(R.id.tv_change_address)).setText("Change");
                 }
             });
 
@@ -115,10 +116,8 @@ public class AddFoodActivity extends BaseActivity {
         rbSelf.setOnClickListener(chooseSelf);
         selectDelivery(false, rbPickup, rbSelf, cardPickup, cardSelf);
 
-        // Sample address tags from the design are not real data
-        ((View) findViewById(R.id.tv_pickup_tag1).getParent()).setVisibility(View.GONE);
         tvPickupName.setText("");
-        tvPickupAddress.setText("Tap \"Change Address\" to pin the pickup location on the map");
+        tvPickupAddress.setText("Not set yet. Pin the exact spot so the volunteer finds you.");
         findViewById(R.id.tv_change_address).setOnClickListener(v -> openPicker());
         tvPickupAddress.setOnClickListener(v -> openPicker());
 
@@ -149,7 +148,7 @@ public class AddFoodActivity extends BaseActivity {
                 return;
             }
             if (!expiryTimeSet) {
-                Toast.makeText(this, "Please set an expiry time", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Pick the time the food is good until", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (expiry.getTimeInMillis() <= System.currentTimeMillis()) {
@@ -157,7 +156,7 @@ public class AddFoodActivity extends BaseActivity {
                 return;
             }
             if (pickupAddress == null) {
-                Toast.makeText(this, "Please pin the pickup location on the map", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Set the pickup point on the map first", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -217,8 +216,8 @@ public class AddFoodActivity extends BaseActivity {
         rbPickup.setChecked(!self);
         rbSelf.setChecked(self);
         float dp = getResources().getDisplayMetrics().density;
-        int primary = ContextCompat.getColor(this, R.color.primary);
-        int divider = ContextCompat.getColor(this, R.color.divider);
+        int primary = ContextCompat.getColor(this, R.color.accent);
+        int divider = ContextCompat.getColor(this, R.color.line);
         cardPickup.setStrokeColor(self ? divider : primary);
         cardPickup.setStrokeWidth((int) (dp * (self ? 1 : 2)));
         cardSelf.setStrokeColor(self ? primary : divider);

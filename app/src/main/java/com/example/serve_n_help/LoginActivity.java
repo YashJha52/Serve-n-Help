@@ -12,10 +12,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.credentials.Credential;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.CustomCredential;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialCancellationException;
+import androidx.credentials.exceptions.GetCredentialException;
+import androidx.credentials.exceptions.NoCredentialException;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FieldValue;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends BaseActivity {
 
@@ -26,7 +42,6 @@ public class LoginActivity extends BaseActivity {
 
     private MaterialButton btnRoleDonor;
     private MaterialButton btnRoleNgo;
-    private TextView tvRoleBadge;
     private ImageView ivRoleHint;
     private TextView tvRoleHint;
     private MaterialButton btnLogin;
@@ -58,7 +73,6 @@ public class LoginActivity extends BaseActivity {
         TextView tvForgot = findViewById(R.id.tv_forgot_password);
         btnRoleDonor = findViewById(R.id.btn_role_donor);
         btnRoleNgo = findViewById(R.id.btn_role_ngo);
-        tvRoleBadge = findViewById(R.id.tv_role_badge);
         ivRoleHint = findViewById(R.id.iv_role_hint_icon);
         tvRoleHint = findViewById(R.id.tv_role_hint_text);
 
@@ -69,7 +83,6 @@ public class LoginActivity extends BaseActivity {
         btnRoleNgo.setOnClickListener(v -> selectRole(FirebaseRepo.ROLE_NGO));
         selectRole(FirebaseRepo.ROLE_DONOR);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         // Firebase sign-in, then route to the dashboard matching the user's role
         btnLogin.setOnClickListener(v -> {
@@ -100,10 +113,8 @@ public class LoginActivity extends BaseActivity {
         // Sign-in methods that are not part of this version
         View.OnClickListener comingSoon = v ->
                 Toast.makeText(this, "Coming soon. Please sign in with email and password.", Toast.LENGTH_SHORT).show();
-        findViewById(R.id.btn_login_biometric).setOnClickListener(comingSoon);
-        findViewById(R.id.btn_sso_google).setOnClickListener(comingSoon);
+        findViewById(R.id.btn_sso_google).setOnClickListener(v -> signInWithGoogle());
         findViewById(R.id.btn_sso_ngo).setOnClickListener(comingSoon);
-        findViewById(R.id.tv_emergency_hotline).setOnClickListener(v -> Ui.dial(this, "1800"));
 
         tvRegister.setOnClickListener(v -> startActivity(new Intent(this, CreateAccountActivity.class)));
     }
@@ -111,26 +122,104 @@ public class LoginActivity extends BaseActivity {
     private void selectRole(String role) {
         selectedRole = role;
         boolean donor = FirebaseRepo.ROLE_DONOR.equals(role);
-        styleRoleButton(btnRoleDonor, donor);
-        styleRoleButton(btnRoleNgo, !donor);
-        tvRoleBadge.setText(donor ? R.string.donor_mode : R.string.ngo_mode);
+        Ui.styleSegment(btnRoleDonor, donor);
+        Ui.styleSegment(btnRoleNgo, !donor);
         ivRoleHint.setImageResource(donor ? R.drawable.ic_restaurant : R.drawable.ic_volunteer_activism);
         tvRoleHint.setText(donor
-                ? "Logging in as Restaurant Donor: publish surplus batches, schedule fast kitchen pickups."
-                : "Logging in as NGO / Shelter: find nearby food on the map and accept pickups.");
+                ? "Post surplus food and track who collects it."
+                : "Find food near you and accept pickups.");
         btnLogin.setText(loginLabel());
     }
 
     private String loginLabel() {
-        return FirebaseRepo.ROLE_NGO.equals(selectedRole) ? "Sign in as NGO" : getString(R.string.sign_in_as_restaurant);
+        return FirebaseRepo.ROLE_NGO.equals(selectedRole) ? "Sign in" : getString(R.string.sign_in_as_restaurant);
     }
 
-    private void styleRoleButton(MaterialButton button, boolean selected) {
-        int bg = ContextCompat.getColor(this, selected ? R.color.primary : R.color.surface_container_low);
-        int fg = ContextCompat.getColor(this, selected ? R.color.on_primary : R.color.on_surface_variant);
-        button.setBackgroundTintList(ColorStateList.valueOf(bg));
-        button.setTextColor(fg);
-        button.setIconTint(ColorStateList.valueOf(fg));
+
+    /**
+     * Google sign-in through Credential Manager, then Firebase. The web client ID is generated
+     * from google-services.json once the Google provider is enabled in the Firebase console.
+     */
+    private void signInWithGoogle() {
+        int clientIdRes = getResources().getIdentifier("default_web_client_id", "string", getPackageName());
+        if (clientIdRes == 0) {
+            Toast.makeText(this, "Google sign-in is not enabled for this Firebase project yet. "
+                    + "Enable it in the Firebase console and download google-services.json again.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        GetGoogleIdOption googleOption = new GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(getString(clientIdRes))
+                .build();
+        GetCredentialRequest request = new GetCredentialRequest.Builder()
+                .addCredentialOption(googleOption)
+                .build();
+
+        setLoading(true);
+        CredentialManager.create(this).getCredentialAsync(this, request, null,
+                ContextCompat.getMainExecutor(this),
+                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                    @Override
+                    public void onResult(GetCredentialResponse response) {
+                        Credential credential = response.getCredential();
+                        if (credential instanceof CustomCredential
+                                && GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
+                            GoogleIdTokenCredential google = GoogleIdTokenCredential.createFrom(credential.getData());
+                            firebaseSignInWithGoogle(google.getIdToken());
+                        } else {
+                            setLoading(false);
+                            Toast.makeText(LoginActivity.this, "Unexpected sign-in response", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(GetCredentialException e) {
+                        setLoading(false);
+                        if (e instanceof GetCredentialCancellationException) return;
+                        String msg = e instanceof NoCredentialException
+                                ? "No Google account found on this device. Add one in Settings → Accounts."
+                                : "Google sign-in failed: " + e.getMessage();
+                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void firebaseSignInWithGoogle(String idToken) {
+        FirebaseRepo.auth().signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+                .addOnSuccessListener(result -> {
+                    FirebaseUser user = result.getUser();
+                    FirebaseRepo.users().document(user.getUid()).get()
+                            .addOnSuccessListener(doc -> {
+                                if (doc.exists()) {
+                                    checkRoleAndRoute(user.getUid());
+                                    return;
+                                }
+                                // First Google sign-in: create the profile with the role picked on the toggle
+                                Map<String, Object> profile = new HashMap<>();
+                                profile.put("userId", user.getUid());
+                                profile.put("name", user.getDisplayName() == null ? "" : user.getDisplayName());
+                                profile.put("representative", user.getDisplayName() == null ? "" : user.getDisplayName());
+                                profile.put("email", user.getEmail());
+                                profile.put("phone", user.getPhoneNumber() == null ? "" : user.getPhoneNumber());
+                                profile.put("role", selectedRole);
+                                profile.put("signInMethod", "google");
+                                profile.put("createdAt", FieldValue.serverTimestamp());
+                                FirebaseRepo.users().document(user.getUid()).set(profile)
+                                        .addOnSuccessListener(x -> openHome(this, selectedRole))
+                                        .addOnFailureListener(e -> {
+                                            setLoading(false);
+                                            Toast.makeText(this, "Saving profile failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        });
+                            })
+                            .addOnFailureListener(e -> {
+                                setLoading(false);
+                                Toast.makeText(this, "Could not load profile: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    setLoading(false);
+                    Toast.makeText(this, friendlyAuthError(e), Toast.LENGTH_LONG).show();
+                });
     }
 
     /** Signs the user back out if they picked the wrong account type on the toggle. */

@@ -2,6 +2,7 @@ package com.example.serve_n_help;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -41,21 +42,70 @@ final class Ui {
         return "Expires in " + (hours / 24) + "d";
     }
 
-    /** Selected / unselected look for the pill-shaped filter chips. */
+    /** Selected / unselected look for filter and diet chips. */
     static void styleChip(TextView chip, boolean selected) {
         Context c = chip.getContext();
-        chip.setBackgroundResource(selected ? R.drawable.bg_pill_primary : R.drawable.bg_pill_neutral);
-        int color = ContextCompat.getColor(c, selected ? R.color.on_primary_fixed : R.color.on_surface_variant);
+        chip.setBackgroundResource(selected ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
+        int color = ContextCompat.getColor(c, selected ? R.color.accent_strong : R.color.ink_muted);
         chip.setTextColor(color);
         Drawable check = null;
         if (selected) {
             check = ContextCompat.getDrawable(c, R.drawable.ic_check).mutate();
-            int size = (int) (14 * c.getResources().getDisplayMetrics().density);
+            int size = (int) (16 * c.getResources().getDisplayMetrics().density);
             check.setBounds(0, 0, size, size);
             check.setTint(color);
         }
         chip.setCompoundDrawablesRelative(check, null, null, null);
         chip.setCompoundDrawablePadding((int) (4 * c.getResources().getDisplayMetrics().density));
+    }
+
+    /**
+     * Status tag colours. Text always names the status too, so colour is never the only signal.
+     * Available = accent, in progress = info, expired = danger, delivered = neutral.
+     */
+    static void styleStatus(TextView tag, Donation d) {
+        int text;
+        int fill;
+        if (d.isExpired()) {
+            text = R.color.danger; fill = R.color.danger_tint;
+        } else if (Donation.STATUS_ACCEPTED.equals(d.status) || Donation.STATUS_PICKED_UP.equals(d.status)) {
+            text = R.color.info; fill = R.color.info_tint;
+        } else if (Donation.STATUS_DELIVERED.equals(d.status)) {
+            text = R.color.ink_muted; fill = R.color.surface_alt;
+        } else {
+            text = R.color.accent_strong; fill = R.color.accent_tint;
+        }
+        Context c = tag.getContext();
+        tag.setText(d.isExpired() ? "Expired" : Donation.statusLabel(d.status));
+        tag.setTextColor(ContextCompat.getColor(c, text));
+        tag.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(c, fill)));
+    }
+
+    /** Centred, muted empty-state line used in place of a blank list. */
+    static TextView emptyState(Context c) {
+        TextView t = new TextView(c);
+        t.setTextAppearance(R.style.TextAppearance_SNH_BodySmall);
+        t.setGravity(android.view.Gravity.CENTER);
+        int pad = (int) (32 * c.getResources().getDisplayMetrics().density);
+        t.setPadding(pad / 2, pad, pad / 2, pad);
+        return t;
+    }
+
+    /** Segmented control: the chosen option lifts to the card colour, the rest blend into the track. */
+    static void styleSegment(com.google.android.material.button.MaterialButton button, boolean selected) {
+        Context c = button.getContext();
+        int bg = ContextCompat.getColor(c, selected ? R.color.segment_on : R.color.surface_alt);
+        int fg = ContextCompat.getColor(c, selected ? R.color.ink : R.color.ink_muted);
+        button.setBackgroundTintList(ColorStateList.valueOf(bg));
+        button.setTextColor(fg);
+        button.setIconTint(ColorStateList.valueOf(fg));
+        button.setSelected(selected);
+    }
+
+    /** Colours the confirm button of a destructive dialog (delete, sign out) red. */
+    static void destructive(androidx.appcompat.app.AlertDialog dialog) {
+        dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(dialog.getContext(), R.color.danger));
     }
 
     static void dial(Context c, String phone) {

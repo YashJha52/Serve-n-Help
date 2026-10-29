@@ -8,8 +8,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.credentials.ClearCredentialStateRequest;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.exceptions.ClearCredentialException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -43,8 +48,7 @@ public class RestaurantDashboardActivity extends BaseActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         LinearLayout cards = findViewById(R.id.layout_donation_cards);
 
-        findViewById(R.id.tv_stat_trend).setVisibility(View.GONE);
-        tvGreeting.setText(greeting() + " 👋");
+        tvGreeting.setText(greeting());
         tvName.setText("");
 
         FirebaseRepo.users().document(FirebaseRepo.uid()).get()
@@ -54,13 +58,13 @@ public class RestaurantDashboardActivity extends BaseActivity {
                     String license = doc.getString("licenseId");
                     if (name != null) tvName.setText(name);
                     String who = !TextUtils.isEmpty(rep) ? rep.split("\\s+")[0] : name;
-                    tvGreeting.setText(greeting() + (TextUtils.isEmpty(who) ? "" : ", " + who) + " 👋");
-                    tvKitchenId.setText(TextUtils.isEmpty(license) ? "Donor account" : "FSSAI " + license);
+                    tvGreeting.setText(greeting() + (TextUtils.isEmpty(who) ? "" : ", " + who));
+                    tvKitchenId.setText(TextUtils.isEmpty(license) ? "Food donor" : "FSSAI licensed · " + license);
                 });
 
         btnAddFood.setOnClickListener(v -> startActivity(new Intent(this, AddFoodActivity.class)));
         tvSeeAll.setOnClickListener(v -> startActivity(new Intent(this, FoodAvailableActivity.class)));
-        findViewById(R.id.iv_dashboard_profile).setOnClickListener(v -> confirmSignOut(this));
+        findViewById(R.id.iv_dashboard_profile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
         findViewById(R.id.btn_dashboard_notifications).setOnClickListener(v -> showNotifications());
 
         bottomNav.setSelectedItemId(R.id.nav_home);
@@ -72,7 +76,7 @@ public class RestaurantDashboardActivity extends BaseActivity {
                 startActivity(new Intent(this, FoodAvailableActivity.class)
                         .putExtra(FoodAvailableActivity.EXTRA_HISTORY, true));
             } else if (id == R.id.nav_profile) {
-                confirmSignOut(this);
+                startActivity(new Intent(this, ProfileActivity.class));
             }
             return id == R.id.nav_home;
         });
@@ -97,10 +101,9 @@ public class RestaurantDashboardActivity extends BaseActivity {
                     }
                     ((TextView) findViewById(R.id.tv_available_count)).setText(String.valueOf(active.size()));
                     if (active.isEmpty()) {
-                        TextView empty = new TextView(this);
-                        empty.setText("No active donations. Tap \"Add Food\" to post surplus food.");
-                        empty.setPadding(8, 24, 8, 24);
-                        cards.addView(empty);
+                        TextView empty = Ui.emptyState(this);
+                        empty.setText("Nothing live right now. Had food left over today? Tap Add food and nearby NGOs will see it.");
+                                                cards.addView(empty);
                         return;
                     }
                     for (Donation d : active.subList(0, Math.min(5, active.size()))) {
@@ -137,7 +140,7 @@ public class RestaurantDashboardActivity extends BaseActivity {
         ((TextView) findViewById(R.id.tv_stat_total_kg)).setText(String.format(Locale.getDefault(), "%.0f", kg));
         ((TextView) findViewById(R.id.tv_stat_active)).setText(String.valueOf(active));
         ((TextView) findViewById(R.id.tv_stat_completed)).setText(String.valueOf(completed));
-        findViewById(R.id.tv_stat_urgent).setVisibility(urgent ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.tv_stat_urgent).setVisibility(urgent ? View.VISIBLE : View.GONE);
     }
 
     private void showNotifications() {
@@ -149,7 +152,7 @@ public class RestaurantDashboardActivity extends BaseActivity {
                     + " by " + d.ngoName + (when.isEmpty() ? "" : " (" + when + ")"));
             if (lines.size() == 10) break;
         }
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Notifications")
                 .setMessage(lines.isEmpty() ? "No updates yet. You will see here when an NGO accepts your food."
                         : TextUtils.join("\n\n", lines))
@@ -161,7 +164,7 @@ public class RestaurantDashboardActivity extends BaseActivity {
         View card = LayoutInflater.from(this).inflate(R.layout.item_dashboard_donation, parent, false);
         ((TextView) card.findViewById(R.id.tv_food_title)).setText(d.foodName);
         ((TextView) card.findViewById(R.id.tv_food_subtitle)).setText(d.category + " • " + d.deliveryMethod);
-        ((TextView) card.findViewById(R.id.tv_status_badge)).setText(Donation.statusLabel(d.status));
+        Ui.styleStatus(card.findViewById(R.id.tv_status_badge), d);
         ((TextView) card.findViewById(R.id.tv_portion_chip)).setText(d.quantity + " " + d.unit);
         ((TextView) card.findViewById(R.id.tv_expiry_chip)).setText(Ui.expiryText(d));
 
@@ -182,23 +185,30 @@ public class RestaurantDashboardActivity extends BaseActivity {
 
     private static String greeting() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour < 12) return "Good Morning";
-        if (hour < 17) return "Good Afternoon";
-        return "Good Evening";
+        if (hour < 12) return "Good morning";
+        if (hour < 17) return "Good afternoon";
+        return "Good evening";
     }
 
     static void confirmSignOut(AppCompatActivity activity) {
-        new AlertDialog.Builder(activity)
+        Ui.destructive(new MaterialAlertDialogBuilder(activity)
                 .setTitle("Sign out")
                 .setMessage("Do you want to sign out of Serve-N-Help?")
                 .setPositiveButton("Sign out", (dialog, which) -> {
                     FirebaseRepo.auth().signOut();
+                    // Forget the chosen Google account so the picker shows again next time
+                    CredentialManager.create(activity).clearCredentialStateAsync(new ClearCredentialStateRequest(), null,
+                            ContextCompat.getMainExecutor(activity),
+                            new CredentialManagerCallback<Void, ClearCredentialException>() {
+                                @Override public void onResult(Void unused) { }
+                                @Override public void onError(ClearCredentialException e) { }
+                            });
                     Intent intent = new Intent(activity, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     activity.startActivity(intent);
                 })
                 .setNegativeButton("Cancel", null)
-                .show();
+                .show());
     }
 
     @Override

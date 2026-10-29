@@ -1,66 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Serve-N-Help palette. Mood: warm, grounded, dependable.
+    A paper-toned background like a kitchen order pad, one forest-green accent
+    (about 10% of any screen), and fixed semantic colours for food status.
+    Dark values live in values-night/colors.xml.
+-->
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- 60%: page background -->
+    <color name="bg">#FAF6EF</color>
+    <!-- 30%: cards, sheets, bars -->
+    <color name="surface">#FFFDF8</color>
+    <color name="surface_alt">#F1EBE0</color>
+    <color name="line">#E3DACB</color>
+    <!-- Selected option in a segmented control: lifts above the sand track -->
+    <color name="segment_on">#FFFDF8</color>
 
-    <!-- Serve-N-Help Theme Colors (From Stitch Design System) -->
-    <color name="primary">#006B2C</color>
-    <color name="primary_accent">#16A34A</color>
-    <color name="primary_dark">#15803D</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#00873A</color>
-    <color name="on_primary_container">#F7FFF2</color>
-    <color name="primary_fixed">#7FFC97</color>
-    <color name="primary_fixed_dim">#62DF7D</color>
-    <color name="primary_fixed_light">#DCFCE7</color>
-    <color name="on_primary_fixed">#002109</color>
-    <color name="on_primary_fixed_variant">#005320</color>
+    <!-- Text, tinted slightly warm to belong to the palette -->
+    <color name="ink">#1E1A14</color>
+    <color name="ink_muted">#655C50</color>
+    <color name="ink_faint">#7C7366</color>
 
-    <color name="secondary">#A73A00</color>
-    <color name="secondary_accent">#EA580C</color>
-    <color name="on_secondary">#FFFFFF</color>
-    <color name="secondary_container">#FD651E</color>
-    <color name="on_secondary_container">#571A00</color>
-    <color name="secondary_fixed">#FFDBCE</color>
-    <color name="secondary_fixed_dim">#FFB599</color>
-    <color name="on_secondary_fixed">#370E00</color>
-    <color name="on_secondary_fixed_variant">#7F2B00</color>
+    <!-- 10%: the one accent -->
+    <color name="accent">#2F6B4F</color>
+    <color name="accent_strong">#24543E</color>
+    <color name="accent_tint">#E2EEE6</color>
+    <color name="on_accent">#FFFFFF</color>
 
-    <color name="tertiary">#006194</color>
-    <color name="on_tertiary">#FFFFFF</color>
-    <color name="tertiary_container">#007BB9</color>
-    <color name="on_tertiary_container">#FDFCFF</color>
-    <color name="tertiary_fixed">#CCE5FF</color>
-    <color name="tertiary_fixed_dim">#93CCFF</color>
-    <color name="on_tertiary_fixed">#001D31</color>
-    <color name="on_tertiary_fixed_variant">#004B73</color>
+    <!-- Semantic: never reused for decoration -->
+    <color name="warning">#8A4500</color>
+    <color name="warning_tint">#FBEAD2</color>
+    <color name="danger">#A8261D</color>
+    <color name="danger_tint">#F8E0DC</color>
+    <color name="info">#1D5A86</color>
+    <color name="info_tint">#E0EBF4</color>
 
-    <color name="background">#F8F9FF</color>
-    <color name="on_background">#0B1C30</color>
-    <color name="surface">#F8F9FF</color>
-    <color name="on_surface">#0B1C30</color>
-    <color name="surface_variant">#D3E4FE</color>
-    <color name="on_surface_variant">#3E4A3D</color>
-
-    <color name="surface_container_lowest">#FFFFFF</color>
-    <color name="surface_container_low">#EFF4FF</color>
-    <color name="surface_container">#E5EEFF</color>
-    <color name="surface_container_high">#DCE9FF</color>
-    <color name="surface_container_highest">#D3E4FE</color>
-    <color name="surface_dim">#CBDBF5</color>
-    <color name="surface_bright">#F8F9FF</color>
-    <color name="surface_tint">#006E2D</color>
-
-    <color name="inverse_surface">#213145</color>
-    <color name="inverse_on_surface">#EAF1FF</color>
-    <color name="inverse_primary">#62DF7D</color>
-
-    <color name="outline">#6E7B6C</color>
-    <color name="outline_variant">#BDCABA</color>
-    <color name="divider">#E2E8F0</color>
-
-    <color name="error">#BA1A1A</color>
-    <color name="on_error">#FFFFFF</color>
-    <color name="error_container">#FFDAD6</color>
-    <color name="on_error_container">#93000A</color>
+    <color name="scrim">#66000000</color>
 </resources>

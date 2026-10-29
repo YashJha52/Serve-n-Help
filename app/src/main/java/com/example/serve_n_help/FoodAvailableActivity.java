@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -70,7 +70,7 @@ public class FoodAvailableActivity extends BaseActivity {
         btnMap.setOnClickListener(v -> startActivity(new Intent(this, DonationsMapActivity.class)));
 
         btnQuickAdd.setOnClickListener(v -> startActivity(new Intent(this, AddFoodActivity.class)));
-        findViewById(R.id.iv_feed_profile).setOnClickListener(v -> RestaurantDashboardActivity.confirmSignOut(this));
+        findViewById(R.id.iv_feed_profile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
         findViewById(R.id.btn_feed_notifications).setOnClickListener(v -> showNotifications());
 
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -100,7 +100,7 @@ public class FoodAvailableActivity extends BaseActivity {
                 }
                 return false;
             } else if (id == R.id.nav_profile) {
-                RestaurantDashboardActivity.confirmSignOut(this);
+                startActivity(new Intent(this, ProfileActivity.class));
                 return false;
             }
             boolean history = id == R.id.nav_history;
@@ -137,9 +137,9 @@ public class FoodAvailableActivity extends BaseActivity {
     private void listen() {
         if (listener != null) listener.remove();
         ((TextView) findViewById(R.id.tv_feed_header_role)).setText(
-                historyMode ? (isNgo ? "My Pickups" : "History") : (isNgo ? "NGO" : "Donations"));
+                historyMode ? (isNgo ? "· NGO" : "· Donor") : (isNgo ? "· NGO" : "· Donor"));
         ((TextView) findViewById(R.id.tv_feed_title_main)).setText(
-                historyMode ? (isNgo ? "My Pickups" : "Donation History") : (isNgo ? "Food Available" : "My Listings"));
+                historyMode ? (isNgo ? "My pickups" : "History") : (isNgo ? "Food available" : "My listings"));
         bottomNav.getMenu().findItem(historyMode ? R.id.nav_history : R.id.nav_donations).setChecked(true);
 
         Query query;
@@ -201,20 +201,19 @@ public class FoodAvailableActivity extends BaseActivity {
             if (CHIP_CATEGORIES[i] == null) chip.setText("All (" + tab.size() + ")");
         }
         ((TextView) findViewById(R.id.tv_feed_live_count)).setText(
-                (historyMode ? "RECORDS • " : "LIVE INVENTORY • ") + tab.size() + (tab.size() == 1 ? " BATCH" : " BATCHES"));
+                tab.size() + (historyMode ? (tab.size() == 1 ? " record" : " records") : (tab.size() == 1 ? " batch live now" : " batches live now")));
         updateBanner();
 
         if (shown == 0) {
-            TextView empty = new TextView(this);
+            TextView empty = Ui.emptyState(this);
             if (!tab.isEmpty()) {
-                empty.setText("No donations match your search.");
+                empty.setText("Nothing matches that search. Try a dish name, an area, or clear the filter.");
             } else if (isNgo) {
-                empty.setText(historyMode ? "You have not accepted any pickups yet." : "No food available right now. Check back soon!");
+                empty.setText(historyMode ? "Pickups you accept will show up here, so you can find them again." : "No food posted near you right now. New donations appear here the moment a kitchen posts them.");
             } else {
-                empty.setText(historyMode ? "Delivered and expired donations will appear here." : "You have no active listings. Tap \"Add Food\" to post one.");
+                empty.setText(historyMode ? "Delivered and expired donations will collect here." : "You have nothing listed. Tap Add food to post today's surplus.");
             }
-            empty.setPadding(8, 24, 8, 24);
-            container.addView(empty);
+                        container.addView(empty);
         }
     }
 
@@ -230,7 +229,7 @@ public class FoodAvailableActivity extends BaseActivity {
                         + (isNgo ? "" : " by " + d.ngoName));
             }
         }
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Notifications")
                 .setMessage(lines.isEmpty() ? "You're all caught up." : android.text.TextUtils.join("\n\n", lines))
                 .setPositiveButton("OK", null)
@@ -262,15 +261,15 @@ public class FoodAvailableActivity extends BaseActivity {
 
     private View buildItem(Donation d) {
         View item = LayoutInflater.from(this).inflate(R.layout.item_food_available, container, false);
-        ((TextView) item.findViewById(R.id.tv_feed_status)).setText(d.isExpired() ? "Expired" : Donation.statusLabel(d.status));
+        Ui.styleStatus(item.findViewById(R.id.tv_feed_status), d);
         ((TextView) item.findViewById(R.id.tv_feed_expiry)).setText(Ui.expiryText(d));
         ((TextView) item.findViewById(R.id.tv_feed_id)).setText(d.shortId());
         ((TextView) item.findViewById(R.id.tv_feed_title)).setText(d.foodName);
         ((TextView) item.findViewById(R.id.tv_feed_quantity)).setText(d.quantity + " " + d.unit
-                + String.format(Locale.getDefault(), " (approx %.1f kg)", d.weightEstimateKg()));
+                + String.format(Locale.getDefault(), " · about %.1f kg", d.weightEstimateKg()));
         ((TextView) item.findViewById(R.id.tv_feed_category_tags)).setText(
                 d.category + (d.dietaryNotes == null || d.dietaryNotes.isEmpty() ? "" : " • " + d.dietaryNotes));
-        ((TextView) item.findViewById(R.id.tv_feed_prep)).setText("Prep: " + d.prepTime);
+        ((TextView) item.findViewById(R.id.tv_feed_prep)).setText("Made " + (d.prepTime == null ? "" : d.prepTime.replace("Today, ", "")));
         ((TextView) item.findViewById(R.id.tv_feed_expires_time)).setText("Expires: " + d.expiryDate + " " + d.expiryTime);
         ((TextView) item.findViewById(R.id.tv_feed_location)).setText(
                 (isNgo && d.donorName != null ? d.donorName + ", " : "") + d.pickupAddress);
@@ -281,14 +280,14 @@ public class FoodAvailableActivity extends BaseActivity {
         boolean canDelete = !isNgo && Donation.STATUS_AVAILABLE.equals(d.status);
         btnDelete.setVisibility(canDelete ? View.VISIBLE : View.GONE);
         btnEdit.setVisibility(View.GONE);
-        btnDelete.setOnClickListener(v -> new AlertDialog.Builder(this)
+        btnDelete.setOnClickListener(v -> Ui.destructive(new MaterialAlertDialogBuilder(this)
                 .setTitle("Delete donation")
                 .setMessage("Remove \"" + d.foodName + "\" from the feed?")
                 .setPositiveButton("Delete", (dialog, which) -> FirebaseRepo.donations().document(d.id).delete()
                         .addOnSuccessListener(x -> Toast.makeText(this, "Donation removed", Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show()))
                 .setNegativeButton("Cancel", null)
-                .show());
+                .show()));
         item.findViewById(R.id.btn_feed_info).setOnClickListener(v -> DonationDetailsActivity.open(this, d.id));
         item.setOnClickListener(v -> DonationDetailsActivity.open(this, d.id));
         return item;

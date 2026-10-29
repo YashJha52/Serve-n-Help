@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 8-point spacing grid and one shape family (8 for controls, 12 for cards). -->
+<resources>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+    <dimen name="space_48">48dp</dimen>
+    <dimen name="screen_margin">16dp</dimen>
+
+    <dimen name="radius_control">8dp</dimen>
+    <dimen name="radius_card">12dp</dimen>
+    <dimen name="touch_target">48dp</dimen>
+    <dimen name="button_height">52dp</dimen>
+    <dimen name="icon_small">16dp</dimen>
+    <dimen name="icon">24dp</dimen>
+</resources>

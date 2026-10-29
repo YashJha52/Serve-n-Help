@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Pick the pickup point: drag the map under a fixed pin, then confirm. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/bg">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_picker"
@@ -11,22 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Fixed pin in the centre of the map; the camera target is the chosen location -->
+    <!-- Fixed pin; the camera target under its tip is the chosen spot -->
     <ImageView
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_location_on"
-        app:tint="@color/primary" />
+        app:tint="@color/accent" />
 
     <ImageButton
         android:id="@+id/btn_back_picker"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/bg_rounded_card"
+        style="@style/Widget.SNH.IconButton"
+        android:layout_margin="@dimen/space_16"
+        android:background="@drawable/bg_map_button"
         android:contentDescription="Back"
         android:src="@drawable/ic_arrow_back" />
 
@@ -35,64 +35,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="@color/surface"
-        app:cardElevation="6dp">
+        android:layout_margin="@dimen/space_16">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/space_16">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pickup_location"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="12sp" />
+                android:text="Drag the map so the pin sits on your kitchen door"
+                android:textAppearance="@style/TextAppearance.SNH.Caption" />
 
             <TextView
                 android:id="@+id/tv_picker_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Move the map to place the pin"
-                android:textColor="@color/on_surface"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/space_8"
+                android:text="Finding address…"
+                android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/space_16"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_my_location"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.SNH.Button.Outlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="1"
-                    android:text="Locate Me"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary"
+                    android:text="Locate me"
+                    android:textSize="14sp"
                     app:icon="@drawable/ic_near_me"
-                    app:iconTint="@color/primary"
-                    app:strokeColor="@color/primary" />
+                    app:iconGravity="textStart" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_confirm_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/space_8"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/primary"
-                    android:text="Confirm"
-                    android:textAllCaps="false"
-                    app:icon="@drawable/ic_check" />
+                    android:text="Confirm spot" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

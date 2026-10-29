@@ -1,179 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- One live donation on the donor home. The whole card opens the details. -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="@color/surface_container_lowest"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="1dp"
-    app:strokeColor="@color/divider"
-    app:strokeWidth="1dp">
+    android:layout_marginBottom="@dimen/space_8"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_16">
 
-        <!-- Top Header Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/iv_food_icon"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_pill_primary"
-                android:contentDescription="Food category icon"
-                android:padding="10dp"
-                android:src="@drawable/ic_lunch_dining"
-                app:tint="@color/primary" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_food_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_food_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Vegetable Biryani"
-                    android:textColor="@color/on_surface"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_food_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Cooked Meals • Hot Prep"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
 
             <TextView
                 android:id="@+id/tv_status_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_pill_primary"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="Accepted"
-                android:textColor="@color/on_primary_fixed"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                style="@style/Widget.SNH.Tag"
+                android:layout_marginStart="@dimen/space_8" />
         </LinearLayout>
 
-        <!-- Portions & Expiry Chips Row -->
+        <TextView
+            android:id="@+id/tv_food_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/space_12"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_portion_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_pill_neutral"
-                android:drawableStart="@drawable/ic_restaurant"
-                android:drawablePadding="4dp"
-                android:drawableTint="@color/outline"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="15 Portions"
-                android:textColor="@color/on_surface"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:drawablePadding="@dimen/space_4"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.SNH.Label"
+                app:drawableStartCompat="@drawable/ic_lunch_dining"
+                app:drawableTint="@color/ink_muted" />
 
             <TextView
                 android:id="@+id/tv_expiry_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_pill_secondary"
-                android:drawableStart="@drawable/ic_schedule"
-                android:drawablePadding="4dp"
-                android:drawableTint="@color/secondary"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="Expires in 2h 45m"
-                android:textColor="@color/secondary"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/space_16"
+                android:drawablePadding="@dimen/space_4"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.SNH.Label"
+                android:textColor="@color/warning"
+                app:drawableStartCompat="@drawable/ic_schedule"
+                app:drawableTint="@color/warning" />
         </LinearLayout>
 
-        <!-- Logistics Status Footnote -->
+        <!-- Who's collecting; shown once an NGO accepts -->
         <LinearLayout
             android:id="@+id/layout_logistics_footnote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_rounded_card_low"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/iv_logistics_icon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/bg_pill_tertiary"
-                android:contentDescription="Logistics icon"
-                android:padding="6dp"
-                android:src="@drawable/ic_local_shipping"
-                app:tint="@color/tertiary" />
+            <View
+                style="@style/Widget.SNH.Divider"
+                android:layout_marginTop="@dimen/space_12" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/space_8"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_partner_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Robin Hood Army"
-                    android:textColor="@color/on_surface"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/iv_logistics_icon"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_local_shipping"
+                    app:tint="@color/info" />
 
-                <TextView
-                    android:id="@+id/tv_eta_status"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Driver en route • ETA 18 mins"
-                    android:textColor="@color/primary"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:layout_marginHorizontal="@dimen/space_12"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_partner_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.Label" />
+
+                    <TextView
+                        android:id="@+id/tv_eta_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SNH.Caption" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btn_partner_call"
+                    style="@style/Widget.SNH.IconButton"
+                    android:background="@drawable/bg_icon_button_filled"
+                    android:contentDescription="Call the NGO"
+                    android:src="@drawable/ic_call"
+                    android:tint="@color/accent" />
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/btn_partner_call"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="@drawable/bg_pill_neutral"
-                android:contentDescription="Call partner"
-                android:src="@drawable/ic_call"
-                app:tint="@color/on_surface_variant" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

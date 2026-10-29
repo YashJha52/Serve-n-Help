@@ -1,593 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Sign in: one role choice, two fields, one primary action. Alternatives sit below. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface"
-    tools:context=".LoginActivity">
+    android:background="@color/bg"
+    android:fillViewport="true">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/surface"
-        app:elevation="2dp">
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_margin"
+        android:paddingTop="@dimen/space_24"
+        android:paddingBottom="@dimen/space_24">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingStart="4dp"
-            android:paddingEnd="16dp">
+        <!-- Brand -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_serve_n_help_logo" />
 
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Go back"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/on_surface" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_12"
+                android:text="Serve-N-Help"
+                android:textAppearance="@style/TextAppearance.SNH.ItemTitle" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/iv_header_logo"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="Brand logo"
-                    android:src="@drawable/ic_serve_n_help_logo" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_32"
+            android:text="Sign in"
+            android:textAppearance="@style/TextAppearance.SNH.Display" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="Pass on today's surplus before it goes to waste."
+            android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="0.05"
-                        android:text="SERVE-N-HELP"
-                        android:textColor="@color/primary"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sign_in"
-                        android:textColor="@color/on_surface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/iv_header_profile"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_status_dot_active"
-                    android:contentDescription="Profile avatar"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/on_primary" />
-            </LinearLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Scrollable Content -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="32dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <!-- Role -->
+        <TextView
+            style="@style/Widget.SNH.FieldLabel"
+            android:layout_marginTop="@dimen/space_32"
+            android:text="I'm signing in as" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="12dp">
+            android:background="@drawable/bg_segmented"
+            android:orientation="horizontal"
+            android:padding="@dimen/space_4">
 
-            <!-- Hero Brand Section -->
-            <ImageView
-                android:id="@+id/iv_center_logo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_serve_n_help_logo" />
-
-            <!-- Pill Badge: Food Rescue Network -->
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_role_donor"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_pill_primary"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp">
+                android:layout_weight="1"
+                android:minHeight="@dimen/touch_target"
+                android:text="Food donor"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_storefront"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_small" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="Eco icon"
-                    android:src="@drawable/ic_eco"
-                    app:tint="@color/primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:letterSpacing="0.02"
-                    android:text="Food Rescue Network"
-                    android:textColor="@color/on_primary_fixed"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_welcome_title"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_role_ngo"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/welcome_back"
-                android:textColor="@color/on_surface"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_welcome_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:paddingHorizontal="12dp"
-                android:text="@string/login_subtitle"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="14sp" />
-
-            <!-- Main Form Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- Role Selection Header -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:letterSpacing="0.05"
-                            android:text="@string/select_account_type"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_role_badge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_primary"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp"
-                            android:text="@string/donor_mode"
-                            android:textColor="@color/primary"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Role Toggle Segmented Control -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_segmented_container"
-                        android:orientation="horizontal"
-                        android:padding="4dp">
-
-                        <!-- Donor Option -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_role_donor"
-                            style="@style/Widget.Material3.Button"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="2dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/primary"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="10dp"
-                            android:text="Donor / Kitchen\nRestaurant"
-                            android:textAllCaps="false"
-                            android:textColor="@color/on_primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="10dp"
-                            app:icon="@drawable/ic_storefront"
-                            app:iconGravity="textStart"
-                            app:iconSize="18dp"
-                            app:iconTint="@color/on_primary" />
-
-                        <!-- NGO Option -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_role_ngo"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_weight="1"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="10dp"
-                            android:text="NGO / Bank\nShelters"
-                            android:textAllCaps="false"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="10dp"
-                            app:icon="@drawable/ic_volunteer_activism"
-                            app:iconGravity="textStart"
-                            app:iconSize="18dp"
-                            app:iconTint="@color/on_surface_variant" />
-                    </LinearLayout>
-
-                    <!-- Role Hint Box -->
-                    <LinearLayout
-                        android:id="@+id/layout_role_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_card_low"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:id="@+id/iv_role_hint_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="Role icon"
-                            android:src="@drawable/ic_restaurant"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:id="@+id/tv_role_hint_text"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="Logging in as Restaurant Donor: publish surplus batches, schedule fast kitchen pickups."
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Email / Phone Input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_email"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/registered_email_phone"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/primary"
-                        app:startIconDrawable="@drawable/ic_badge"
-                        app:startIconTint="@color/outline">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Password Input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_password"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="@string/security_password"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/primary"
-                        app:endIconMode="password_toggle"
-                        app:endIconTint="@color/outline"
-                        app:startIconDrawable="@drawable/ic_lock"
-                        app:startIconTint="@color/outline">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_password"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Remember Me & Forgot Password Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cb_remember_me"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:checked="true"
-                            android:text="@string/stay_signed_in"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp"
-                            app:buttonTint="@color/primary" />
-
-                        <TextView
-                            android:id="@+id/tv_forgot_password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/forgot_password"
-                            android:textColor="@color/primary"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Safe Handling Badge Row -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:contentDescription="Verified"
-                            android:src="@drawable/ic_verified_user"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="@string/safe_handling"
-                            android:textColor="@color/primary"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Primary Sign In Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_login_primary"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="16dp"
-                        android:backgroundTint="@color/primary"
-                        android:text="@string/sign_in_as_restaurant"
-                        android:textAllCaps="false"
-                        android:textColor="@color/on_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_login"
-                        app:iconGravity="textStart"
-                        app:iconSize="20dp"
-                        app:iconTint="@color/on_primary" />
-
-                    <!-- Quick OTP / Biometric Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_login_biometric"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="8dp"
-                        android:backgroundTint="@color/surface_container"
-                        android:text="@string/sign_in_otp_biometrics"
-                        android:textAllCaps="false"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_fingerprint"
-                        app:iconGravity="textStart"
-                        app:iconSize="20dp"
-                        app:iconTint="@color/primary" />
-
-                    <!-- Divider: Or continue with -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/divider" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:text="@string/or_continue_with"
-                            android:textColor="@color/on_surface_variant"
-                            android:textSize="12sp" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/divider" />
-                    </LinearLayout>
-
-                    <!-- SSO Buttons Grid -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_sso_google"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginEnd="4dp"
-                            android:layout_weight="1"
-                            android:text="@string/google_sso"
-                            android:textAllCaps="false"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp"
-                            app:cornerRadius="10dp"
-                            app:icon="@drawable/ic_google"
-                            app:iconGravity="textStart"
-                            app:iconSize="18dp"
-                            app:iconTint="@null"
-                            app:strokeColor="@color/divider" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_sso_ngo"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_weight="1"
-                            android:text="@string/ngo_gov_id"
-                            android:textAllCaps="false"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp"
-                            app:cornerRadius="10dp"
-                            app:icon="@drawable/ic_shield"
-                            app:iconGravity="textStart"
-                            app:iconSize="18dp"
-                            app:iconTint="@color/secondary"
-                            app:strokeColor="@color/divider" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Footer Section -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_account"
-                    android:textColor="@color/on_surface"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_register_partner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/register_partner"
-                    android:textColor="@color/primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Trust Badge -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_pill_neutral"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="Trust shield"
-                    android:src="@drawable/ic_shield"
-                    app:tint="@color/primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/verified_community_footer"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Hotline Info -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/need_urgent_food_help"
-                    android:textColor="@color/on_surface_variant"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_emergency_hotline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/emergency_hotline"
-                    android:textColor="@color/secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_marginStart="@dimen/space_4"
+                android:layout_weight="1"
+                android:minHeight="@dimen/touch_target"
+                android:text="NGO"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_volunteer_activism"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_small" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_role_hint_icon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_restaurant"
+                app:tint="@color/ink_muted" />
+
+            <TextView
+                android:id="@+id/tv_role_hint_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_8"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.SNH.Caption" />
+        </LinearLayout>
+
+        <!-- Credentials -->
+        <TextView
+            style="@style/Widget.SNH.FieldLabel"
+            android:layout_marginTop="@dimen/space_24"
+            android:text="Email" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_mail">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="you@restaurant.in"
+                android:id="@+id/et_email"
+                style="@style/Widget.SNH.EditText"
+                android:autofillHints="emailAddress"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            style="@style/Widget.SNH.FieldLabel"
+            android:text="Password" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_lock">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                style="@style/Widget.SNH.EditText"
+                android:autofillHints="password"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_remember_me"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:minHeight="@dimen/touch_target"
+                android:text="Keep me signed in"
+                android:textAppearance="@style/TextAppearance.SNH.BodySmall" />
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_target"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/space_8"
+                android:text="Forgot password?"
+                android:textAppearance="@style/TextAppearance.SNH.Label"
+                android:textColor="@color/accent" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16"
+            android:text="@string/sign_in_as_restaurant" />
+
+        <!-- Alternatives -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_24"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                style="@style/Widget.SNH.Divider"
+                android:layout_width="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/space_12"
+                android:text="or continue with"
+                android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
+            <View
+                style="@style/Widget.SNH.Divider"
+                android:layout_width="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sso_google"
+                style="@style/Widget.SNH.Button.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Google"
+                app:icon="@drawable/ic_google"
+                app:iconGravity="textStart"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sso_ngo"
+                style="@style/Widget.SNH.Button.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_8"
+                android:layout_weight="1"
+                android:text="@string/ngo_gov_id"
+                app:icon="@drawable/ic_badge"
+                app:iconGravity="textStart" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="@dimen/space_32" />
+
+        <TextView
+            android:id="@+id/tv_register_partner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="New here? Create an account"
+            android:textAppearance="@style/TextAppearance.SNH.Label"
+            android:textColor="@color/accent" />
+    </LinearLayout>
+</ScrollView>
