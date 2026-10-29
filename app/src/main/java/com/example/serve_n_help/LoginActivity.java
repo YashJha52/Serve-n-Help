@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
@@ -25,18 +27,22 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class LoginActivity extends BaseActivity {
 
     private static final String PREFS = "serve_n_help";
     private static final String KEY_REMEMBER = "remember_me";
+    private static final String KEY_LAST_UID = "last_uid";
 
     private String selectedRole = FirebaseRepo.ROLE_DONOR;
 
@@ -45,6 +51,7 @@ public class LoginActivity extends BaseActivity {
     private ImageView ivRoleHint;
     private TextView tvRoleHint;
     private MaterialButton btnLogin;
+    private MaterialButton btnBiometric;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class LoginActivity extends BaseActivity {
         TextInputEditText etPassword = findViewById(R.id.et_password);
         MaterialCheckBox cbRemember = findViewById(R.id.cb_remember_me);
         btnLogin = findViewById(R.id.btn_login_primary);
+        btnBiometric = findViewById(R.id.btn_biometric);
         TextView tvRegister = findViewById(R.id.tv_register_partner);
         TextView tvForgot = findViewById(R.id.tv_forgot_password);
         btnRoleDonor = findViewById(R.id.btn_role_donor);
@@ -81,7 +89,16 @@ public class LoginActivity extends BaseActivity {
         // Donor / NGO segmented toggle
         btnRoleDonor.setOnClickListener(v -> selectRole(FirebaseRepo.ROLE_DONOR));
         btnRoleNgo.setOnClickListener(v -> selectRole(FirebaseRepo.ROLE_NGO));
-        selectRole(FirebaseRepo.ROLE_DONOR);
+
+        String savedRole = prefs.getString("last_role", null);
+        selectRole(!TextUtils.isEmpty(savedRole) ? savedRole : FirebaseRepo.ROLE_DONOR);
+
+        String savedEmail = prefs.getString("last_email", null);
+        if (!TextUtils.isEmpty(savedEmail)) {
+            etEmail.setText(savedEmail);
+        }
+
+        btnBiometric.setOnClickListener(v -> showBiometricPrompt());
 
 
         // Firebase sign-in, then route to the dashboard matching the user's role
@@ -90,9 +107,16 @@ public class LoginActivity extends BaseActivity {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
             prefs.edit().putBoolean(KEY_REMEMBER, cbRemember.isChecked()).apply();
+            prefs.edit().putString("last_email", email).apply();
+            prefs.edit().putString("last_pass", password).apply();
+            prefs.edit().putString("last_role", selectedRole).apply();
             setLoading(true);
             FirebaseRepo.auth().signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener(result -> checkRoleAndRoute(result.getUser().getUid()))
+                    .addOnSuccessListener(result -> {
+                        String uid = result.getUser().getUid();
+                        FirebaseRepo.users().document(uid).update("biometricEnabled", true);
+                        checkRoleAndRoute(uid);
+                    })
                     .addOnFailureListener(e -> {
                         setLoading(false);
                         Toast.makeText(this, friendlyAuthError(e), Toast.LENGTH_LONG).show();
@@ -224,25 +248,118 @@ public class LoginActivity extends BaseActivity {
 
     /** Signs the user back out if they picked the wrong account type on the toggle. */
     private void checkRoleAndRoute(String uid) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        prefs.edit().putString(KEY_LAST_UID, uid).apply();
+
+        String savedRole = prefs.getString("last_role", selectedRole);
+
+        if (FirebaseRepo.auth().getCurrentUser() == null) {
+            openHome(this, savedRole != null ? savedRole : selectedRole);
+            return;
+        }
+
         FirebaseRepo.users().document(uid).get()
                 .addOnSuccessListener(doc -> {
                     String role = doc.getString("role");
-                    if (role == null) role = FirebaseRepo.ROLE_DONOR;
-                    if (!role.equals(selectedRole)) {
-                        FirebaseRepo.auth().signOut();
-                        setLoading(false);
-                        Toast.makeText(this, FirebaseRepo.ROLE_NGO.equals(role)
-                                ? "This is an NGO account. Select \"NGO / Bank\" above to sign in."
-                                : "This is a Donor account. Select \"Donor / Kitchen\" above to sign in.",
-                                Toast.LENGTH_LONG).show();
-                        return;
+                    if (role == null) role = savedRole != null ? savedRole : FirebaseRepo.ROLE_DONOR;
+                    String email = doc.getString("email");
+                    if (!TextUtils.isEmpty(email)) {
+                        prefs.edit().putString("last_email", email).apply();
+                        TextInputEditText etEmail = findViewById(R.id.et_email);
+                        if (etEmail != null) etEmail.setText(email);
                     }
+                    prefs.edit().putString("last_role", role).apply();
+                    selectRole(role);
                     openHome(this, role);
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Toast.makeText(this, "Could not load profile: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    if (savedRole != null) {
+                        openHome(this, savedRole);
+                    } else {
+                        Toast.makeText(this, "Could not load profile: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 });
+    }
+
+    private void showBiometricPrompt() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+        int canAuthenticate = biometricManager.canAuthenticate(
+                BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK);
+
+        if (canAuthenticate != BiometricManager.BIOMETRIC_SUCCESS) {
+            String msg;
+            switch (canAuthenticate) {
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    msg = "No biometric hardware available on this device.";
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    msg = "Biometric hardware is currently unavailable.";
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    msg = "No biometrics enrolled. Please set up fingerprint or face unlock in device settings.";
+                    break;
+                default:
+                    msg = "Biometric authentication is not available on this device.";
+                    break;
+            }
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this, executor,
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        if (errorCode != BiometricPrompt.ERROR_USER_CANCELED && errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                            Toast.makeText(getApplicationContext(), "Biometric error: " + errString, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        Toast.makeText(getApplicationContext(), "Biometric verification successful!", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+                        TextInputEditText etEmail = findViewById(R.id.et_email);
+                        String enteredEmail = etEmail != null ? etEmail.getText().toString().trim() : "";
+                        String savedEmail = prefs.getString("last_email", null);
+                        String savedPass = prefs.getString("last_pass", null);
+
+                        String targetEmail = !TextUtils.isEmpty(enteredEmail) ? enteredEmail : savedEmail;
+
+                        if (FirebaseRepo.auth().getCurrentUser() != null) {
+                            checkRoleAndRoute(FirebaseRepo.auth().getCurrentUser().getUid());
+                        } else if (!TextUtils.isEmpty(targetEmail) && !TextUtils.isEmpty(savedPass)) {
+                            setLoading(true);
+                            FirebaseRepo.auth().signInWithEmailAndPassword(targetEmail, savedPass)
+                                    .addOnSuccessListener(authResult -> checkRoleAndRoute(authResult.getUser().getUid()))
+                                    .addOnFailureListener(e -> {
+                                        setLoading(false);
+                                        Toast.makeText(LoginActivity.this, "Biometric sign-in failed: " + friendlyAuthError(e), Toast.LENGTH_LONG).show();
+                                    });
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Please sign in with email & password once to enable one-touch biometric login.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        Toast.makeText(getApplicationContext(), "Biometric match failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric Sign In")
+                .setSubtitle("Use your fingerprint or face to sign in")
+                .setNegativeButtonText("Use Password")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
     }
 
     private void setLoading(boolean loading) {

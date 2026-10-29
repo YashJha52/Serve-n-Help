@@ -388,6 +388,29 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Biometrics Setup (Optional) -->
+            <TextView
+                style="@style/Widget.SNH.FieldLabel"
+                android:layout_marginTop="@dimen/space_16"
+                android:text="@string/biometric_authentication" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_setup_biometric"
+                style="@style/Widget.SNH.Button.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_biometric_optional"
+                app:icon="@drawable/ic_fingerprint"
+                app:iconGravity="textStart" />
+
+            <TextView
+                android:id="@+id/tv_biometric_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:text="@string/biometric_setup_hint"
+                android:textAppearance="@style/TextAppearance.SNH.Caption" />
+
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/cb_agree_terms"
                 android:layout_width="match_parent"

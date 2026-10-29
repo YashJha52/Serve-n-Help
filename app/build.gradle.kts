@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.mlkit.barcode)
     implementation(libs.zxing.core)
+    implementation(libs.androidx.biometric)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

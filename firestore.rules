@@ -40,6 +40,7 @@ service cloud.firestore {
       // The plain pickup code: readable and writable only by the donor who owns the donation
       match /private/{doc} {
         allow read, write: if signedIn()
+            && exists(/databases/$(database)/documents/donations/$(id))
             && get(/databases/$(database)/documents/donations/$(id)).data.donorId == request.auth.uid;
       }
     }

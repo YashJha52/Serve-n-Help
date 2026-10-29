@@ -188,6 +188,16 @@
             android:layout_marginTop="@dimen/space_16"
             android:text="@string/sign_in_as_restaurant" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_biometric"
+            style="@style/Widget.SNH.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:text="@string/sign_in_biometrics"
+            app:icon="@drawable/ic_fingerprint"
+            app:iconGravity="textStart" />
+
         <!-- Alternatives -->
         <LinearLayout
             android:layout_width="match_parent"
