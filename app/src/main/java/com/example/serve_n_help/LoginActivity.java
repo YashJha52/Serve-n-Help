@@ -93,10 +93,8 @@ public class LoginActivity extends BaseActivity {
         String savedRole = prefs.getString("last_role", null);
         selectRole(!TextUtils.isEmpty(savedRole) ? savedRole : FirebaseRepo.ROLE_DONOR);
 
-        String savedEmail = prefs.getString("last_email", null);
-        if (!TextUtils.isEmpty(savedEmail)) {
-            etEmail.setText(savedEmail);
-        }
+        // Keep email field empty on app start/restart
+        etEmail.setText("");
 
         btnBiometric.setOnClickListener(v -> showBiometricPrompt());
 
@@ -114,6 +112,7 @@ public class LoginActivity extends BaseActivity {
             FirebaseRepo.auth().signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener(result -> {
                         String uid = result.getUser().getUid();
+                        BiometricKeyManager.saveAccountCredentials(this, email, password, selectedRole, "");
                         FirebaseRepo.users().document(uid).update("biometricEnabled", true);
                         checkRoleAndRoute(uid);
                     })
@@ -265,8 +264,6 @@ public class LoginActivity extends BaseActivity {
                     String email = doc.getString("email");
                     if (!TextUtils.isEmpty(email)) {
                         prefs.edit().putString("last_email", email).apply();
-                        TextInputEditText etEmail = findViewById(R.id.et_email);
-                        if (etEmail != null) etEmail.setText(email);
                     }
                     prefs.edit().putString("last_role", role).apply();
                     selectRole(role);
@@ -283,6 +280,54 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void showBiometricPrompt() {
+        TextInputEditText etEmail = findViewById(R.id.et_email);
+        String enteredEmail = etEmail != null ? etEmail.getText().toString().trim() : "";
+
+        List<BiometricKeyManager.AccountInfo> registeredAccounts = BiometricKeyManager.getRegisteredAccounts(this);
+
+        if (!TextUtils.isEmpty(enteredEmail)) {
+            BiometricKeyManager.AccountInfo account = BiometricKeyManager.getAccountInfo(this, enteredEmail);
+            if (account == null) {
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("Biometric Sign-In")
+                        .setMessage("No biometric sign-in configured for " + enteredEmail + " on this device. Please sign in with password once.")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return;
+            }
+            launchBiometricPromptForAccount(account);
+            return;
+        }
+
+        if (registeredAccounts.isEmpty()) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Enable Biometric Sign-In")
+                    .setMessage("Please sign in once with your email and password to enable one-touch biometric login on this device.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
+        if (registeredAccounts.size() == 1) {
+            launchBiometricPromptForAccount(registeredAccounts.get(0));
+            return;
+        }
+
+        String[] accountNames = new String[registeredAccounts.size()];
+        for (int i = 0; i < registeredAccounts.size(); i++) {
+            accountNames[i] = registeredAccounts.get(i).getDisplayName();
+        }
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Select Account for Biometric Sign-In")
+                .setItems(accountNames, (dialog, which) -> launchBiometricPromptForAccount(registeredAccounts.get(which)))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void launchBiometricPromptForAccount(BiometricKeyManager.AccountInfo account) {
+        if (account == null) return;
+
         BiometricManager biometricManager = BiometricManager.from(this);
         int canAuthenticate = biometricManager.canAuthenticate(
                 BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK);
@@ -323,26 +368,26 @@ public class LoginActivity extends BaseActivity {
                         super.onAuthenticationSucceeded(result);
                         Toast.makeText(getApplicationContext(), "Biometric verification successful!", Toast.LENGTH_SHORT).show();
 
-                        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+                        String savedPass = BiometricKeyManager.getSavedPassword(LoginActivity.this, account.email);
+                        String accountRole = !TextUtils.isEmpty(account.role) ? account.role : BiometricKeyManager.getSavedRole(LoginActivity.this, account.email);
+
                         TextInputEditText etEmail = findViewById(R.id.et_email);
-                        String enteredEmail = etEmail != null ? etEmail.getText().toString().trim() : "";
-                        String savedEmail = prefs.getString("last_email", null);
-                        String savedPass = prefs.getString("last_pass", null);
+                        if (etEmail != null) etEmail.setText(account.email);
+                        selectRole(accountRole);
 
-                        String targetEmail = !TextUtils.isEmpty(enteredEmail) ? enteredEmail : savedEmail;
-
-                        if (FirebaseRepo.auth().getCurrentUser() != null) {
+                        if (FirebaseRepo.auth().getCurrentUser() != null &&
+                                account.email.equalsIgnoreCase(FirebaseRepo.auth().getCurrentUser().getEmail())) {
                             checkRoleAndRoute(FirebaseRepo.auth().getCurrentUser().getUid());
-                        } else if (!TextUtils.isEmpty(targetEmail) && !TextUtils.isEmpty(savedPass)) {
+                        } else if (!TextUtils.isEmpty(savedPass)) {
                             setLoading(true);
-                            FirebaseRepo.auth().signInWithEmailAndPassword(targetEmail, savedPass)
+                            FirebaseRepo.auth().signInWithEmailAndPassword(account.email, savedPass)
                                     .addOnSuccessListener(authResult -> checkRoleAndRoute(authResult.getUser().getUid()))
                                     .addOnFailureListener(e -> {
                                         setLoading(false);
                                         Toast.makeText(LoginActivity.this, "Biometric sign-in failed: " + friendlyAuthError(e), Toast.LENGTH_LONG).show();
                                     });
                         } else {
-                            Toast.makeText(LoginActivity.this, "Please sign in with email & password once to enable one-touch biometric login.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Please sign in with email & password once for " + account.email, Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -355,7 +400,7 @@ public class LoginActivity extends BaseActivity {
 
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Biometric Sign In")
-                .setSubtitle("Use your fingerprint or face to sign in")
+                .setSubtitle("Signing in as " + account.email)
                 .setNegativeButtonText("Use Password")
                 .build();
 
