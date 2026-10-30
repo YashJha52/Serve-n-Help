@@ -134,6 +134,13 @@ public class CreateAccountActivity extends BaseActivity {
 
                         FirebaseRepo.users().document(uid).set(user)
                                 .addOnSuccessListener(x -> {
+                                    BiometricKeyManager.saveAccountCredentials(
+                                            this,
+                                            email,
+                                            password,
+                                            selectedRole,
+                                            textOf(etOrgName)
+                                    );
                                     LoginActivity.openHome(this, selectedRole);
                                 })
                                 .addOnFailureListener(e -> {
